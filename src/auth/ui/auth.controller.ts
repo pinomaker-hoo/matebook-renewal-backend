@@ -16,6 +16,7 @@ import ReqWithUser from '../dto/passport.req.dto'
 import { CreateUserDto } from '../dto/user.create.dto'
 import KakaoGuard from '../passport/auth.kakao.guard'
 import { LocalGuard } from '../passport/auth.local.guard'
+import { NaverGuard } from '../passport/auth.naver.guard'
 
 @Controller('auth')
 export class AuthController {
@@ -52,4 +53,16 @@ export class AuthController {
   async kakaoLoginCallback(@Req() req): Promise<{ accessToken: string }> {
     return this.authService.kakaoLogin(req.user)
   }
+
+  @Get('/naver')
+  @HttpCode(200)
+  @UseGuards(NaverGuard)
+  async naverLogin() {
+    return HttpStatus.OK
+  }
+
+  @Get('/naver/callback')
+  @HttpCode(200)
+  @UseGuards(NaverGuard)
+  async naverLoginCallback() {}
 }
