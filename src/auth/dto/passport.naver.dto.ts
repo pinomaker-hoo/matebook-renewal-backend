@@ -1,16 +1,16 @@
 import { IsString } from 'class-validator'
 import { Provider } from './user.provider.enum'
 
-export class KakaoDto {
+export class NaverDto {
   @IsString()
   name: string
 
   @IsString()
-  kakaoId: string
+  naverId: string
 
   @IsString()
   email: string
 
   @IsString()
-  provider: Provider.KAKAO
+  provider: Provider.NAVER
 }

@@ -9,7 +9,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common'
-import { AuthGuard } from '@nestjs/passport'
+import { Response } from 'express'
 import { AuthService } from '../application/auth.service'
 import { User } from '../domain/user.entity'
 import ReqWithUser from '../dto/passport.req.dto'
@@ -22,22 +22,22 @@ import { NaverGuard } from '../passport/auth.naver.guard'
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Get()
-  async serverCheck() {
-    return 'Hello world'
+  @Post()
+  async localSave(@Body() req: CreateUserDto): Promise<User> {
+    return await this.authService.localSave(req)
   }
 
   @UseGuards(LocalGuard)
-  @Post()
-  async login(@Req() req: ReqWithUser, @Res() res) {
+  @Post('/local')
+  async localLogin(@Req() req: ReqWithUser, @Res() res: Response) {
     const { user } = req
-    const token = await this.authService.jwtWithCookie(user.idx)
-    return res.json({ info: user, token: token })
-  }
-
-  @Post('/register')
-  async save(@Body() req: CreateUserDto): Promise<User> {
-    return await this.authService.save(req)
+    const token = await this.authService.gwtJwtWithIdx(user.idx)
+    res.header('Access-Control-Allow-Origin', '*')
+    res.set('Authorization', 'Bearer ' + token)
+    res.cookie('accessToken', token, {
+      maxAge: 24 * 60 * 60,
+    })
+    res.redirect('http://localhost:3000')
   }
 
   @Get('/kakao')
@@ -47,11 +47,18 @@ export class AuthController {
     return HttpStatus.OK
   }
 
-  @Get('kakao/callback')
+  @Get('/kakao/callback')
   @HttpCode(200)
   @UseGuards(KakaoGuard)
-  async kakaoLoginCallback(@Req() req): Promise<{ accessToken: string }> {
-    return this.authService.kakaoLogin(req.user)
+  async kakaoCallBack(@Req() req, @Res() res: Response) {
+    console.log(req.user)
+    const token = await this.authService.kakaoLogin(req.user)
+    res.header('Access-Control-Allow-Origin', '*')
+    res.set('Authorization', 'Bearer ' + token)
+    res.cookie('accessToken', token, {
+      maxAge: 24 * 60 * 60,
+    })
+    res.redirect('http://localhost:3000')
   }
 
   @Get('/naver')
@@ -64,5 +71,14 @@ export class AuthController {
   @Get('/naver/callback')
   @HttpCode(200)
   @UseGuards(NaverGuard)
-  async naverLoginCallback() {}
+  async naverCallBack(@Req() req, @Res() res: Response) {
+    console.log(req)
+    const token = await this.authService.naverLogin(req.user)
+    res.header('Access-Control-Allow-Origin', '*')
+    res.set('Authorization', 'Bearer ' + token)
+    res.cookie('accessToken', token, {
+      maxAge: 24 * 60 * 60,
+    })
+    res.redirect('http://localhost:3000')
+  }
 }

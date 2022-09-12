@@ -5,6 +5,8 @@ import { User } from '../domain/user.entity'
 import { CreateUserDto } from '../dto/user.create.dto'
 import { JwtService } from '@nestjs/jwt'
 import { KakaoDto } from '../dto/passport.kakao.dto'
+import { NaverDto } from '../dto/passport.naver.dto'
+import { Provider } from '../dto/user.provider.enum'
 
 @Injectable()
 export class AuthService {
@@ -13,19 +15,23 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async save(req: CreateUserDto): Promise<User> {
-    const hash = await bcrypt.hash(req.password, 13)
-    const user = this.userRepository.create({
-      email: req.id,
-      password: hash,
-      name: req.name,
-      number: req.number,
-      provider: 'local',
-    })
-    return await this.userRepository.save(user)
+  /** 회원가입 */
+  async localSave(req: CreateUserDto): Promise<User> {
+    try {
+      const hash = await bcrypt.hash(req.password, 13)
+      const user = this.userRepository.create({
+        email: req.id,
+        password: hash,
+        name: req.name,
+        provider: Provider.LOCAL,
+      })
+      return await this.userRepository.save(user)
+    } catch (err) {
+      throw new HttpException('Not Found', HttpStatus.BAD_REQUEST)
+    }
   }
 
-  async login(id: string, password: string): Promise<User> {
+  async localLogin(id: string, password: string): Promise<User> {
     try {
       const user = await this.userRepository.findOne({ where: { email: id } })
       await this.compareBcrypt(password, user.password)
@@ -35,42 +41,77 @@ export class AuthService {
     }
   }
 
-  async jwtWithCookie(userId: number) {
-    const token = this.jwtService.sign({ userId })
-    return token
+  async kakaoLogin(req: KakaoDto): Promise<String> {
+    try {
+      const findUser = await this.userRepository.findOne({
+        where: { providerIdx: req.kakaoId },
+      })
+      if (findUser) return await this.gwtJwtWithIdx(findUser.idx)
+      const saveUser = await this.kakaoSave(req)
+      console.log(1, saveUser)
+      return await this.gwtJwtWithIdx(saveUser.idx)
+    } catch (err) {
+      throw new HttpException('Not Found', HttpStatus.BAD_REQUEST)
+    }
   }
 
-  async getUserByIdx(userId: number): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { idx: userId } })
-    if (!user) throw new HttpException('Not Found', HttpStatus.NOT_FOUND)
-    return user
+  async kakaoSave(req: KakaoDto): Promise<User> {
+    try {
+      const user = this.userRepository.create({
+        email: req.email,
+        name: req.name,
+        provider: req.provider,
+        providerIdx: req.kakaoId,
+      })
+      const saveUser = await this.userRepository.save(user)
+      console.log(saveUser)
+      return saveUser
+    } catch (err) {
+      console.log(err)
+      throw new HttpException('Not Found!!', HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  async naverLogin(req: NaverDto) {
+    try {
+      const findUser = await this.getUserbyProviderIdx(req.naverId)
+      if (findUser) return await this.gwtJwtWithIdx(findUser.idx)
+      const saveUser = await this.naverSave(req)
+      return await this.gwtJwtWithIdx(saveUser.idx)
+    } catch (err) {
+      throw new HttpException('Not Found', HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  async naverSave(req: NaverDto) {
+    try {
+      const user = this.userRepository.create({
+        email: req.email,
+        name: req.name,
+        provider: req.provider,
+        providerIdx: req.naverId,
+      })
+      return await this.userRepository.save(user)
+    } catch (err) {
+      throw new HttpException('Not Found', HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  async gwtJwtWithIdx(idx: number) {
+    return this.jwtService.sign({ idx })
+  }
+
+  async getUserbyProviderIdx(providerIdx: string) {
+    return await this.userRepository.findOne({ where: { providerIdx } })
+  }
+
+  async getUserByIdx(idx: number) {
+    return await this.userRepository.findOne({ where: { idx } })
   }
 
   async compareBcrypt(password: string, hash: string) {
     const result = await bcrypt.compare(password, hash)
     if (!result)
       throw new HttpException('Password ERROR', HttpStatus.BAD_REQUEST)
-  }
-
-  async kakaoLogin(req: KakaoDto): Promise<{ accessToken: string }> {
-    const user = await this.kakaoSave(req)
-    return { accessToken: await this.jwtWithCookie(user.idx) }
-  }
-
-  async findByEmail(email: string): Promise<User> {
-    return await this.userRepository.findOne({ where: { email } })
-  }
-
-  async kakaoSave(req: KakaoDto) {
-    const findUser = await this.findByEmail(req.email)
-    if (findUser) return findUser
-    const hash = await bcrypt.hash(req.kakaoId, 13)
-    const user = this.userRepository.create({
-      email: req.email,
-      password: hash,
-      name: req.name,
-      provider: req.provider,
-    })
-    return await this.userRepository.save(user)
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { Strategy } from 'passport-kakao'
 import { KakaoDto } from '../dto/passport.kakao.dto'
+import { Provider } from '../dto/user.provider.enum'
 
 @Injectable()
 export class KakaoStrategy extends PassportStrategy(Strategy) {
@@ -22,7 +23,7 @@ export class KakaoStrategy extends PassportStrategy(Strategy) {
         kakao_account.has_email && !kakao_account.email_needs_agreement
           ? kakao_account.email
           : null,
-      provider: 'kakao',
+      provider: Provider.KAKAO,
     }
     done(null, payload)
   }
