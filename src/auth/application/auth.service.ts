@@ -8,10 +8,12 @@ import { KakaoDto } from '../dto/passport.kakao.dto'
 import { NaverDto } from '../dto/passport.naver.dto'
 import { Provider } from '../dto/user.provider.enum'
 import { EmailConfig } from 'src/config/email-config'
+import { MailerService } from '@nestjs-modules/mailer'
 
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly mailerService: MailerService,
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
   ) {}
@@ -123,31 +125,24 @@ export class AuthService {
   }
 
   /** Local Login Send Mail Code */
-  async SendMail() {
-    const code = String()
+  async sendMail(email: string) {
+    try {
+      const number: number = await this.getRandomNumber()
+      const mail = await this.mailerService.sendMail({
+        to: email, // list of receivers
+        from: 'inhoo25@naver.com', // sender address
+        subject: '이메일 인증 요청 메일입니다.', // Subject line
+        html: '6자리 인증 코드 : ' + `<b> ${number}</b>`, // HTML body content
+      })
+      console.log(mail)
+      return number
+    } catch (err) {
+      console.log(err)
+    }
   }
-  // try {
-  //   const checkCode = String(emailData.number()),
-  //     transporter = nodemailer.createTransport({
-  //       service: "Naver",
-  //       prot: 587,
-  //       host: "smtp.naver.com",
-  //       secure: false,
-  //       requireTLS: true,
-  //       auth: {
-  //         user: emailData.user,
-  //         pass: emailData.pw,
-  //       },
-  //     }),
-  //     mailOptions = {
-  //       from: emailData.user,
-  //       to: req.body.email,
-  //       subject: "[ANYAD Sign Up Check Code]",
-  //       text: `Your Code : ${checkCode}`,
-  //     }
-  //   await transporter.sendMail(mailOptions)
-  //   res.json({ code: checkCode })
-  // } catch (error) {
-  //   console.log(error)
-  // }
+  async getRandomNumber() {
+    let number = Math.floor(Math.random() * 1000000) + 100000
+    if (number > 1000000) number -= 100000
+    return number
+  }
 }

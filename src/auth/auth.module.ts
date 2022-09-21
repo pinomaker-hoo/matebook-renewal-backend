@@ -10,9 +10,30 @@ import { JwtModule } from '@nestjs/jwt'
 import { JwtStrategy } from './passport/auth.jwt.strategy'
 import { KakaoStrategy } from './passport/auth.kakao.strategy'
 import { NaverStrategy } from './passport/auth.naver.strategy'
+import { MailerModule } from '@nestjs-modules/mailer'
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter'
 
 @Module({
   imports: [
+    MailerModule.forRoot({
+      transport: {
+        service: 'Naver',
+        host: 'smtp.naver.com',
+        port: 587,
+        auth: {
+          user: 'inhoo25@naver.com', // generated ethereal user
+          pass: 'wjd1127@!', // generated ethereal password
+        },
+      },
+
+      template: {
+        dir: process.cwd() + '/template/',
+        adapter: new HandlebarsAdapter(), // or new PugAdapter()
+        options: {
+          strict: true,
+        },
+      },
+    }),
     PassportModule,
     TypeOrmModule.forFeature([UserRepository]),
     ConfigModule,

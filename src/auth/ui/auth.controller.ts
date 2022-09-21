@@ -80,4 +80,9 @@ export class AuthController {
     })
     res.redirect('http://localhost:3000')
   }
+
+  @Post('/mail')
+  async sendMail(@Body() req) {
+    return this.authService.sendMail(req.email)
+  }
 }
