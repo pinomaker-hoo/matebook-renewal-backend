@@ -16,7 +16,6 @@ export class KakaoStrategy extends PassportStrategy(Strategy) {
   async validate(accessToken, refreshToken, profile, done) {
     const profileJson = profile._json
     const kakao_account = profileJson.kakao_account
-    console.log(kakao_account)
     const payload: KakaoDto = {
       name: kakao_account.profile.nickname,
       kakaoId: profileJson.id,
@@ -24,8 +23,6 @@ export class KakaoStrategy extends PassportStrategy(Strategy) {
         kakao_account.has_email && !kakao_account.email_needs_agreement
           ? kakao_account.email
           : null,
-      // male: null,
-      birth: null,
       provider: Provider.KAKAO,
     }
     done(null, payload)
