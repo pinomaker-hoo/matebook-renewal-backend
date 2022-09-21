@@ -2,13 +2,13 @@
 
 ## 어린이 독서 장려 프로젝트
 
+
 ```
 Project Start
 ```
-1. git clone
-2. cd swyg-server-nest
-3. npm install
-4. npm run dev
 ```
-
+  1. git clone
+  2. cd swyg-server-nest
+  3. npm install
+  4. npm run dev
 ```
