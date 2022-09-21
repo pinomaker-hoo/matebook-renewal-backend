@@ -17,12 +17,6 @@ export class User extends BaseTimeEntity {
   @Column({ type: 'varchar', length: 255 })
   name: string
 
-  @Column({ type: 'boolean' })
-  male: boolean
-
-  @Column({ type: 'date' })
-  birth: Date
-
   @Column({ nullable: true })
   providerIdx: string
 

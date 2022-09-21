@@ -9,10 +9,4 @@ export class CreateUserDto {
 
   @IsString()
   name: string
-
-  @IsDate()
-  birth: Date
-
-  @IsBoolean()
-  male: boolean
 }

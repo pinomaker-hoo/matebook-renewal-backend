@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator'
+import { IsBoolean, IsDate, IsString } from 'class-validator'
 import { Provider } from './user.provider.enum'
 
 export class NaverDto {

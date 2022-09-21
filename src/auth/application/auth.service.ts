@@ -24,8 +24,6 @@ export class AuthService {
         email: req.email,
         password: hash,
         name: req.name,
-        male: req.male,
-        birth: req.birth,
         provider: Provider.LOCAL,
       })
       return await this.userRepository.save(user)
