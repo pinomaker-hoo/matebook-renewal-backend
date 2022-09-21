@@ -24,6 +24,8 @@ export class AuthService {
         email: req.email,
         password: hash,
         name: req.name,
+        male: req.male,
+        birth: req.birth,
         provider: Provider.LOCAL,
       })
       return await this.userRepository.save(user)
@@ -33,9 +35,9 @@ export class AuthService {
   }
 
   /** Local 로그인 */
-  async localLogin(id: string, password: string): Promise<User> {
+  async localLogin(email: string, password: string): Promise<User> {
     try {
-      const user = await this.userRepository.findOne({ where: { email: id } })
+      const user = await this.userRepository.findOne({ where: { email } })
       await this.compareBcrypt(password, user.password)
       return user
     } catch (err) {
@@ -123,7 +125,7 @@ export class AuthService {
   }
 
   /** Local Login Send Mail Code */
-  async SendMail(){
+  async SendMail() {
     const code = String()
   }
   // try {

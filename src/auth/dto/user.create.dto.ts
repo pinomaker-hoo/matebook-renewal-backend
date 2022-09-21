@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator'
+import { IsBoolean, IsDate, IsString } from 'class-validator'
 
 export class CreateUserDto {
   @IsString()
@@ -9,4 +9,10 @@ export class CreateUserDto {
 
   @IsString()
   name: string
+
+  @IsDate()
+  birth: Date
+
+  @IsBoolean()
+  male: boolean
 }
