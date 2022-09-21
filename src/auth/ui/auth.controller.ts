@@ -24,6 +24,7 @@ export class AuthController {
 
   @Post()
   async localSave(@Body() req: CreateUserDto): Promise<User> {
+    console.log(req)
     return await this.authService.localSave(req)
   }
 
@@ -51,7 +52,6 @@ export class AuthController {
   @HttpCode(200)
   @UseGuards(KakaoGuard)
   async kakaoCallBack(@Req() req, @Res() res: Response) {
-    console.log(req.user)
     const token = await this.authService.kakaoLogin(req.user)
     res.header('Access-Control-Allow-Origin', '*')
     res.set('Authorization', 'Bearer ' + token)
@@ -72,7 +72,6 @@ export class AuthController {
   @HttpCode(200)
   @UseGuards(NaverGuard)
   async naverCallBack(@Req() req, @Res() res: Response) {
-    console.log(req)
     const token = await this.authService.naverLogin(req.user)
     res.header('Access-Control-Allow-Origin', '*')
     res.set('Authorization', 'Bearer ' + token)

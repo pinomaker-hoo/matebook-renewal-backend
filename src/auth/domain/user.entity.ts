@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm'
 import { Provider } from '../dto/user.provider.enum'
 
 @Entity({ name: 'tbl_user' })
-@Unique(['email'])
+@Unique(['email', 'providerIdx'])
 export class User extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   idx: number
