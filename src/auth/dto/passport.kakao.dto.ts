@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator'
+import { IsBoolean, IsDate, IsString } from 'class-validator'
 import { Provider } from './user.provider.enum'
 
 export class KakaoDto {
@@ -10,6 +10,12 @@ export class KakaoDto {
 
   @IsString()
   email: string
+
+  @IsDate()
+  birth: Date
+
+  // @IsBoolean()
+  // male: boolean
 
   @IsString()
   provider: Provider.KAKAO
