@@ -9,4 +9,4 @@ import { PointController } from './ui/point.controller'
   controllers: [PointController],
   providers: [PointService],
 })
-export class AppModule {}
+export class PointModule {}
