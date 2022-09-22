@@ -7,7 +7,6 @@ import { JwtService } from '@nestjs/jwt'
 import { KakaoDto } from '../dto/passport.kakao.dto'
 import { NaverDto } from '../dto/passport.naver.dto'
 import { Provider } from '../dto/user.provider.enum'
-import { EmailConfig } from 'src/config/email-config'
 import { MailerService } from '@nestjs-modules/mailer'
 
 @Injectable()
@@ -134,7 +133,6 @@ export class AuthService {
         subject: '이메일 인증 요청 메일입니다.', // Subject line
         html: '6자리 인증 코드 : ' + `<b> ${number}</b>`, // HTML body content
       })
-      console.log(mail)
       return number
     } catch (err) {
       console.log(err)
