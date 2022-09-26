@@ -12,6 +12,7 @@ import {
 import { Response } from 'express'
 import { AuthService } from '../application/auth.service'
 import { User } from '../domain/user.entity'
+import { MailDto } from '../dto/mail.dto'
 import ReqWithUser from '../dto/passport.req.dto'
 import { CreateUserDto } from '../dto/user.create.dto'
 import KakaoGuard from '../passport/auth.kakao.guard'
@@ -33,12 +34,10 @@ export class AuthController {
   async localLogin(@Req() req: ReqWithUser, @Res() res: Response) {
     const { user } = req
     const token = await this.authService.gwtJwtWithIdx(user.idx)
-    res.header('Access-Control-Allow-Origin', '*')
-    res.set('Authorization', 'Bearer ' + token)
     res.cookie('accessToken', token, {
       maxAge: 24 * 60 * 60,
     })
-    res.redirect('http://localhost:3000')
+    res.send('http://localhost:5173')
   }
 
   @Get('/kakao')
@@ -58,7 +57,7 @@ export class AuthController {
     res.cookie('accessToken', token, {
       maxAge: 24 * 60 * 60,
     })
-    res.redirect('http://localhost:3000')
+    res.redirect('http://localhost:5173')
   }
 
   @Get('/naver')
@@ -78,11 +77,11 @@ export class AuthController {
     res.cookie('accessToken', token, {
       maxAge: 24 * 60 * 60,
     })
-    res.redirect('http://localhost:3000')
+    res.redirect('http://localhost:5173')
   }
 
   @Post('/mail')
-  async sendMail(@Body() req) {
+  async sendMail(@Body() req: MailDto) {
     return this.authService.sendMail(req.email)
   }
 }

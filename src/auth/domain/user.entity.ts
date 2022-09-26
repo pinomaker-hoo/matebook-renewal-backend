@@ -1,5 +1,12 @@
 import { BaseTimeEntity } from 'src/common/entity/BaseTime.Entity'
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm'
+import { Point } from 'src/point/domain/point.entity'
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm'
 import { Provider } from '../dto/user.provider.enum'
 
 @Entity({ name: 'tbl_user' })
@@ -22,4 +29,7 @@ export class User extends BaseTimeEntity {
 
   @Column({ type: 'enum', enum: Provider })
   provider: Provider
+
+  @OneToMany((type) => Point, (point) => point.user)
+  point: Point[]
 }

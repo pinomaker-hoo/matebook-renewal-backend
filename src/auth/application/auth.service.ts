@@ -45,7 +45,7 @@ export class AuthService {
   }
 
   /** Kakao Login(Passport) */
-  async kakaoLogin(req: KakaoDto): Promise<String> {
+  async kakaoLogin(req: KakaoDto): Promise<string> {
     try {
       const findUser = await this.userRepository.findOne({
         where: { providerIdx: req.kakaoId },
@@ -127,11 +127,11 @@ export class AuthService {
   async sendMail(email: string) {
     try {
       const number: number = await this.getRandomNumber()
-      const mail = await this.mailerService.sendMail({
-        to: email, // list of receivers
-        from: 'inhoo25@naver.com', // sender address
-        subject: '이메일 인증 요청 메일입니다.', // Subject line
-        html: '6자리 인증 코드 : ' + `<b> ${number}</b>`, // HTML body content
+      await this.mailerService.sendMail({
+        to: 'inhoo23@naver.com',
+        from: 'inhoo25@naver.com',
+        subject: '이메일 인증 요청 메일입니다.',
+        html: '6자리 인증 코드 : ' + `<b> ${number}</b>`,
       })
       return number
     } catch (err) {

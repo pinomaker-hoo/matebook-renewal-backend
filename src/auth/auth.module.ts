@@ -21,8 +21,8 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
         host: 'smtp.naver.com',
         port: 587,
         auth: {
-          user: 'inhoo25@naver.com', // generated ethereal user
-          pass: 'wjd1127@!', // generated ethereal password
+          user: 'inhoo25@naver.com',
+          pass: 'qwer1595@!',
         },
       },
 
