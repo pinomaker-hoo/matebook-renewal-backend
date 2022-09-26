@@ -15,14 +15,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => {
-          return request?.cookies?.Authentication
+          return request?.cookies?.accessToken
         },
       ]),
       secretOrKey: 'swyg3',
     })
   }
 
-  async validate(userIdx: number): Promise<User> {
-    return await this.authService.getUserByIdx(userIdx)
+  async validate(token): Promise<User> {
+    return await this.authService.getUserByIdx(token.idx)
   }
 }
