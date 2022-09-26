@@ -1,5 +1,6 @@
 import { BaseTimeEntity } from 'src/common/entity/BaseTime.Entity'
 import { Point } from 'src/point/domain/point.entity'
+import { Quiz } from 'src/quiz/domain/quiz.entity'
 import {
   Column,
   Entity,
@@ -32,4 +33,7 @@ export class User extends BaseTimeEntity {
 
   @OneToMany((type) => Point, (point) => point.user)
   point: Point[]
+
+  @OneToMany((type) => Quiz, (quiz) => quiz.user)
+  quiz: Quiz[]
 }
