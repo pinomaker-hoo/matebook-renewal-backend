@@ -20,3 +20,4 @@ import { QuizModule } from './quiz/quiz.module'
   providers: [],
 })
 export class AppModule {}
+ 
