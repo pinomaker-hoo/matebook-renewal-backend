@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { User } from 'src/auth/domain/user.entity'
 import { Quiz } from '../domain/quiz.entity'
 import { QuizKind } from '../dto/quiz.kind.enum'
@@ -16,5 +16,23 @@ export class QuizService {
       kind: QuizKind.OX,
     })
     return await this.quizRepository.save(quiz)
+  }
+
+  async getQuizThree() {
+    try {
+      const quiz: Quiz[] = await this.quizRepository.find()
+      const quizList: Quiz[] = []
+      for (let i = 0; i < 3; i++) {
+        let r = parseInt(Math.floor(Math.random() * 10).toFixed())
+        if (r > quiz.length) {
+          quizList.push(quiz[r - quiz.length])
+        } else {
+          quizList.push(quiz[r])
+        }
+      }
+      return quizList
+    } catch (err) {
+      throw new HttpException('ERROR', HttpStatus.NOT_FOUND)
+    }
   }
 }
