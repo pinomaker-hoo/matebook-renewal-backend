@@ -1,5 +1,12 @@
 import { BaseTimeEntity } from 'src/common/entity/BaseTime.Entity'
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm'
+import { Review } from 'src/review/domain/review.entity'
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm'
 
 @Entity({ name: 'tbl_book' })
 @Unique(['isbn'])
@@ -27,4 +34,7 @@ export class Book extends BaseTimeEntity {
 
   @Column()
   thumbnail: string
+
+  @OneToMany((type) => Review, (review) => review.book)
+  review: Review[]
 }
