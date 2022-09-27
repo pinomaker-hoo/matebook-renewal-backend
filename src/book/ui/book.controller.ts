@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post } from '@nestjs/common'
 import { BookService } from '../application/book.service'
 import { BookSaveDto } from '../dto/book.save.dto'
 
@@ -12,7 +12,12 @@ export class BookController {
   }
 
   @Get()
-  async test() {
-    return 'Hello world'
+  async findBookList() {
+    return await this.bookService.findBookList()
+  }
+
+  @Get('/:id')
+  async findBook(@Param('id') idx: string) {
+    return await this.bookService.findBookByIdx(Number(idx))
   }
 }
