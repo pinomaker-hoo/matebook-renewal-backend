@@ -8,5 +8,6 @@ import { BookController } from './ui/book.controller'
   imports: [TypeOrmModule.forFeature([BookRepository])],
   controllers: [BookController],
   providers: [BookService],
+  exports: [BookService],
 })
 export class BookModule {}
