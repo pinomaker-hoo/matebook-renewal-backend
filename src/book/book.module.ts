@@ -7,7 +7,7 @@ import { BookController } from './ui/book.controller'
 @Module({
   imports: [TypeOrmModule.forFeature([BookRepository])],
   controllers: [BookController],
-  providers: [BookService],
-  exports: [BookService],
+  providers: [BookService, BookRepository],
+  exports: [BookRepository],
 })
 export class BookModule {}
