@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { User } from 'src/auth/domain/user.entity'
-import { BookService } from 'src/book/application/book.service'
+import { BookRepository } from 'src/book/infrastructure/book.repository'
 import { Review } from '../domain/review.entity'
 import { ReviewRepository } from '../infrastructure/review.repository'
 
@@ -8,11 +8,11 @@ import { ReviewRepository } from '../infrastructure/review.repository'
 export class ReviewService {
   constructor(
     private readonly reviewRepository: ReviewRepository,
-    private readonly bookService: BookService,
+    private readonly bookRepository: BookRepository,
   ) {}
 
   async saveReview(user: User, bookIdx: number, text: string): Promise<Review> {
-    const book = await this.bookService.findBookByIdx(bookIdx)
+    const book = await this.bookRepository.findOne({ where: { idx: bookIdx } })
     const review = this.reviewRepository.create({ user, book, text })
     return await this.reviewRepository.save(review)
   }
