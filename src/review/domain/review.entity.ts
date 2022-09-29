@@ -2,6 +2,7 @@ import { User } from 'src/auth/domain/user.entity'
 import { Book } from 'src/book/domain/book.entity'
 import { Comment } from 'src/comment/domain/comment.entity'
 import { BaseTimeEntity } from 'src/common/entity/BaseTime.Entity'
+import { ReviewLike } from 'src/reviewLike/domain/reviewLike.entity'
 import {
   Column,
   Entity,
@@ -26,4 +27,7 @@ export class Review extends BaseTimeEntity {
 
   @OneToMany((type) => Comment, (comment) => comment.review)
   comment: Comment[]
+
+  @OneToMany((type) => ReviewLike, (reviewLike) => reviewLike.review)
+  reviewLike: ReviewLike[]
 }

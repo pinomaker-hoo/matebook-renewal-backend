@@ -2,6 +2,7 @@ import { BaseTimeEntity } from 'src/common/entity/BaseTime.Entity'
 import { Point } from 'src/point/domain/point.entity'
 import { Quiz } from 'src/quiz/domain/quiz.entity'
 import { Review } from 'src/review/domain/review.entity'
+import { ReviewLike } from 'src/reviewLike/domain/reviewLike.entity'
 import {
   Column,
   Entity,
@@ -40,4 +41,7 @@ export class User extends BaseTimeEntity {
 
   @OneToMany((type) => Review, (review) => review.user)
   review: Review[]
+
+  @OneToMany((type) => ReviewLike, (reviewLike) => reviewLike.user)
+  reviewLike: ReviewLike[]
 }

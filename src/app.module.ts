@@ -8,6 +8,7 @@ import { typeORMConfig } from './config/typeorm.config'
 import { PointModule } from './point/point.module'
 import { QuizModule } from './quiz/quiz.module'
 import { ReviewModule } from './review/review.module'
+import { ReviewLikeModule } from './reviewLike/reviewLike.module'
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ReviewModule } from './review/review.module'
     BookModule,
     ReviewModule,
     CommentModule,
+    ReviewLikeModule,
   ],
   controllers: [],
   providers: [],
