@@ -37,4 +37,6 @@ export class Book extends BaseTimeEntity {
 
   @OneToMany((type) => Review, (review) => review.book)
   review: Review[]
+
+  
 }
