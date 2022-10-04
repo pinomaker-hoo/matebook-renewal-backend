@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { User } from 'src/auth/domain/user.entity'
+import { ReviewService } from 'src/review/application/review.service'
 import { Review } from 'src/review/domain/review.entity'
-import { ReviewRepository } from 'src/review/infrastructure/review.repository'
 import { ReviewLike } from '../domain/reviewLike.entity'
 import { ReviewLikeRepository } from '../infrastructure/reviewLike.repository'
 
@@ -9,14 +9,12 @@ import { ReviewLikeRepository } from '../infrastructure/reviewLike.repository'
 export class ReviewLikeService {
   constructor(
     private readonly reviewLikeRepository: ReviewLikeRepository,
-    private readonly reviewRepository: ReviewRepository,
+    private readonly reviewService: ReviewService,
   ) {}
 
   async likeReview(user: User, reviewIdx: number) {
     try {
-      const review: Review = await this.reviewRepository.findOne({
-        where: { idx: reviewIdx },
-      })
+      const review: Review = await this.reviewService.findReviewById(reviewIdx)
       const liked: boolean = await this.getLiked(user, review)
       if (liked) return new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
       const reviewLike: ReviewLike = this.reviewLikeRepository.create({
@@ -31,9 +29,7 @@ export class ReviewLikeService {
 
   async cancelLike(user: User, reviewIdx: number) {
     try {
-      const review: Review = await this.reviewRepository.findOne({
-        where: { idx: reviewIdx },
-      })
+      const review: Review = await this.reviewService.findReviewById(reviewIdx)
       const liked: boolean = await this.getLiked(user, review)
       if (!liked)
         return new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
