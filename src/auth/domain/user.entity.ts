@@ -1,4 +1,5 @@
 import { BaseTimeEntity } from 'src/common/entity/BaseTime.Entity'
+import { Mate } from 'src/mate/domain/mate.entity'
 import { Point } from 'src/point/domain/point.entity'
 import { Quiz } from 'src/quiz/domain/quiz.entity'
 import { Review } from 'src/review/domain/review.entity'
@@ -7,6 +8,7 @@ import {
   Column,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm'
@@ -44,4 +46,7 @@ export class User extends BaseTimeEntity {
 
   @OneToMany((type) => ReviewLike, (reviewLike) => reviewLike.user)
   reviewLike: ReviewLike[]
+
+  @OneToOne((type) => Mate, (mate) => mate.user)
+  mate: Mate
 }
