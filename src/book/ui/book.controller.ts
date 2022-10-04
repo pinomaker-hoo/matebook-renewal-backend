@@ -20,4 +20,9 @@ export class BookController {
   async findBook(@Param('id') idx: string) {
     return await this.bookService.findBookByIdx(Number(idx))
   }
+
+  @Get('/count/:id')
+  async findBookListCount(@Param('id') idx: string) {
+    return await this.bookService.findBookListCount(Number(idx))
+  }
 }
