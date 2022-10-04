@@ -50,6 +50,7 @@ export class ReviewLikeService {
       })
       return reviewLike ? true : false
     } catch (err) {
+      console.log(err)
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND)
     }
   }

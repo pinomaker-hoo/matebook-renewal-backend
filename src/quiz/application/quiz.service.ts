@@ -9,13 +9,18 @@ export class QuizService {
   constructor(private readonly quizRepository: QuizRepository) {}
 
   async saveQuiz(user: User, text: string, answer: boolean): Promise<Quiz> {
-    const quiz = this.quizRepository.create({
-      text,
-      answer,
-      user,
-      kind: QuizKind.OX,
-    })
-    return await this.quizRepository.save(quiz)
+    try {
+      const quiz = this.quizRepository.create({
+        text,
+        answer,
+        user,
+        kind: QuizKind.OX,
+      })
+      return await this.quizRepository.save(quiz)
+    } catch (err) {
+      console.log(err)
+      throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
+    }
   }
 
   async getQuizThree() {
@@ -32,6 +37,7 @@ export class QuizService {
       }
       return quizList
     } catch (err) {
+      console.log(err)
       throw new HttpException('ERROR', HttpStatus.NOT_FOUND)
     }
   }

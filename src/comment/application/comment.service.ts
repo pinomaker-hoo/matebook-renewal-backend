@@ -31,6 +31,7 @@ export class CommentService {
     try {
       return await this.commentRepository.find({ where: { review: reviewIdx } })
     } catch (err) {
+      console.log(err)
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
     }
   }

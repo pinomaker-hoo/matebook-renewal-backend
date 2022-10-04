@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { User } from 'src/auth/domain/user.entity'
 import { BookService } from 'src/book/application/book.service'
 import { Book } from 'src/book/domain/book.entity'
@@ -13,16 +13,31 @@ export class ReviewService {
   ) {}
 
   async saveReview(user: User, bookIdx: number, text: string): Promise<Review> {
-    const book: Book = await this.bookService.findBookByIdx(bookIdx)
-    const review = this.reviewRepository.create({ user, book, text })
-    return await this.reviewRepository.save(review)
+    try {
+      const book: Book = await this.bookService.findBookByIdx(bookIdx)
+      const review = this.reviewRepository.create({ user, book, text })
+      return await this.reviewRepository.save(review)
+    } catch (err) {
+      console.log(err)
+      throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
+    }
   }
 
   async findBookList(idx: number): Promise<Review[]> {
-    return await this.reviewRepository.find({ where: { idx } })
+    try {
+      return await this.reviewRepository.find({ where: { idx } })
+    } catch (err) {
+      console.log(err)
+      throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
+    }
   }
 
   async findReviewById(idx: number): Promise<Review> {
-    return await this.reviewRepository.findOne({ where: { idx } })
+    try {
+      return await this.reviewRepository.findOne({ where: { idx } })
+    } catch (err) {
+      console.log(err)
+      throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
+    }
   }
 }
