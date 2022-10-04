@@ -10,7 +10,7 @@ import { ReviewController } from './ui/review.controller'
 @Module({
   imports: [TypeOrmModule.forFeature([ReviewRepository]), BookModule],
   controllers: [ReviewController],
-  providers: [ReviewService, ReviewRepository],
-  exports: [ReviewRepository],
+  providers: [ReviewService],
+  exports: [ReviewService],
 })
 export class ReviewModule {}
