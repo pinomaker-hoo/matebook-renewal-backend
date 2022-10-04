@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { User } from 'src/auth/domain/user.entity'
+import { ReviewService } from 'src/review/application/review.service'
 import { Review } from 'src/review/domain/review.entity'
-import { ReviewRepository } from 'src/review/infrastructure/review.repository'
 import { Comment } from '../domain/comment.entity'
 import { CommentRepository } from '../infrastructure/comment.repository'
 
@@ -9,14 +9,12 @@ import { CommentRepository } from '../infrastructure/comment.repository'
 export class CommentService {
   constructor(
     private readonly commentRepository: CommentRepository,
-    private readonly reviewRepository: ReviewRepository,
+    private readonly reviewService: ReviewService,
   ) {}
 
   async saveComment(user: User, text: string, reviewIdx: number) {
     try {
-      const review: Review = await this.reviewRepository.findOne({
-        where: { idx: reviewIdx },
-      })
+      const review: Review = await this.reviewService.findReviewById(reviewIdx)
       const comment: Comment = this.commentRepository.create({
         user,
         text,
