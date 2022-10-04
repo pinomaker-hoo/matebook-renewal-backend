@@ -7,6 +7,7 @@ import { ReviewLike } from 'src/reviewLike/domain/reviewLike.entity'
 import {
   Column,
   Entity,
+  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -48,5 +49,6 @@ export class User extends BaseTimeEntity {
   reviewLike: ReviewLike[]
 
   @OneToOne((type) => Mate, (mate) => mate.user)
+  @JoinColumn()
   mate: Mate
 }
