@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module'
 import { BookModule } from './book/book.module'
 import { CommentModule } from './comment/comment.module'
 import { typeORMConfig } from './config/typeorm.config'
+import { MateModule } from './mate/mate.module'
 import { PointModule } from './point/point.module'
 import { QuizModule } from './quiz/quiz.module'
 import { ReviewModule } from './review/review.module'
@@ -21,6 +22,7 @@ import { ReviewLikeModule } from './reviewLike/reviewLike.module'
     ReviewModule,
     CommentModule,
     ReviewLikeModule,
+    MateModule,
   ],
   controllers: [],
   providers: [],
