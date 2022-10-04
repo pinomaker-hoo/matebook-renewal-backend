@@ -20,15 +20,19 @@ export class AuthService {
   /** Local 회원가입 */
   async localSave(req: CreateUserDto): Promise<User> {
     try {
-      const hash = await bcrypt.hash(req.password, 13)
+      const salt = await bcrypt.genSalt()
+      console.log(salt)
+      const hash = await this.getHashAndSalt(req.password, salt)
       const user = this.userRepository.create({
         email: req.email,
         password: hash,
         name: req.name,
         provider: Provider.LOCAL,
+        salt,
       })
       return await this.userRepository.save(user)
     } catch (err) {
+      console.log(err)
       throw new HttpException('Not Found', HttpStatus.BAD_REQUEST)
     }
   }
@@ -116,6 +120,10 @@ export class AuthService {
     return await this.userRepository.findOne({ where: { idx } })
   }
 
+  async getHashAndSalt(password: string, salt: number): Promise<string> {
+    return await bcrypt.hash(password, salt)
+  }
+
   /** Bcrypt를 이용한 Hash 풀가 */
   async compareBcrypt(password: string, hash: string) {
     const result = await bcrypt.compare(password, hash)
@@ -128,7 +136,7 @@ export class AuthService {
     try {
       const number: number = await this.getRandomNumber()
       await this.mailerService.sendMail({
-        to: 'inhoo23@naver.com',
+        to: email,
         from: 'inhoo25@naver.com',
         subject: '이메일 인증 요청 메일입니다.',
         html: '6자리 인증 코드 : ' + `<b> ${number}</b>`,

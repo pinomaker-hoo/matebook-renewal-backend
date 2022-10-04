@@ -1,9 +1,9 @@
 import * as bcrypt from 'bcryptjs'
 
 export class BcryptUtils {
-  static async encode(password): Promise<string> {
+  static async encode(password: string): Promise<{}> {
     const salt = await bcrypt.genSalt()
-    return await bcrypt.hash(password, salt)
+    return { hash: await bcrypt.hash(password, salt), salt }
   }
 
   static async compare(password: string, hash: string): Promise<boolean> {

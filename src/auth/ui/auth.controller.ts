@@ -25,7 +25,6 @@ export class AuthController {
 
   @Post()
   async localSave(@Body() req: CreateUserDto): Promise<User> {
-    console.log(req)
     return await this.authService.localSave(req)
   }
 

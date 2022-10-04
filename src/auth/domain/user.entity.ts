@@ -24,6 +24,9 @@ export class User extends BaseTimeEntity {
   @Column({ type: 'varchar', length: 255 })
   email: string
 
+  @Column({ nullable: true, type: 'varchar' })
+  salt: string
+
   @Column({ nullable: true, type: 'varchar', length: 255 })
   password: string
 
