@@ -12,12 +12,12 @@ import { ReviewLikeModule } from './reviewLike/reviewLike.module'
 
 @Module({
   imports: [
-    AuthModule,
     TypeOrmModule.forRoot(typeORMConfig),
     ConfigModule.forRoot(),
+    AuthModule,
+    BookModule,
     PointModule,
     QuizModule,
-    BookModule,
     ReviewModule,
     CommentModule,
     ReviewLikeModule,
