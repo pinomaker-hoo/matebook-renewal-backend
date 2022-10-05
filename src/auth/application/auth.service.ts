@@ -21,7 +21,6 @@ export class AuthService {
   async localSave(req: CreateUserDto): Promise<User> {
     try {
       const salt = await bcrypt.genSalt()
-      console.log(salt)
       const hash = await this.getHashAndSalt(req.password, salt)
       const user = this.userRepository.create({
         email: req.email,
