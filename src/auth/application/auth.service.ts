@@ -20,14 +20,12 @@ export class AuthService {
   /** Local 회원가입 */
   async localSave(req: CreateUserDto): Promise<User> {
     try {
-      const salt = await bcrypt.genSalt()
-      const hash = await this.getHashAndSalt(req.password, salt)
+      const hash = await bcrypt.hash(req.password, 8)
       const user = this.userRepository.create({
         email: req.email,
         password: hash,
         name: req.name,
         provider: Provider.LOCAL,
-        salt,
       })
       return await this.userRepository.save(user)
     } catch (err) {
