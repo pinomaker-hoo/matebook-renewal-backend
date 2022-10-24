@@ -30,6 +30,12 @@ export class User extends BaseTimeEntity {
   @Column({ type: 'varchar', length: 255 })
   name: string
 
+  @Column({ type: 'boolean' })
+  male: boolean
+
+  @Column({ type: 'varchar' })
+  birth: string
+
   @Column({ nullable: true })
   providerIdx: string
 

@@ -15,6 +15,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 
 @Module({
   imports: [
+    ConfigModule,
     MailerModule.forRoot({
       transport: {
         service: 'Naver',
@@ -22,10 +23,9 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
         port: 587,
         auth: {
           user: 'inhoo25@naver.com',
-          pass: 'qwer1595@!',
+          pass: 'qwqw1595@!',
         },
       },
-
       template: {
         dir: process.cwd() + '/template/',
         adapter: new HandlebarsAdapter(), // or new PugAdapter()
@@ -36,14 +36,13 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
     }),
     PassportModule,
     TypeOrmModule.forFeature([UserRepository]),
-    ConfigModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        secret: 'swyg3',
+        secret: configService.get('JWT_SECRET'),
         signOptions: {
-          expiresIn: '2h',
+          expiresIn: configService.get('JWT_EXPIRESIN'),
         },
       }),
     }),

@@ -20,7 +20,7 @@ export class Book extends BaseTimeEntity {
   @Column()
   isbn: string
 
-  @Column({ type: 'mediumblob' })
+  @Column({ type: 'text' })
   contents: string
 
   // @Column()

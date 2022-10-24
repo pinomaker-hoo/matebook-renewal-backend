@@ -46,7 +46,10 @@ export class BookService {
 
   async findBookByIdx(bookIdx: number) {
     try {
-      return await this.bookRepository.findOne({ where: { idx: bookIdx } })
+      return await this.bookRepository.findOne({
+        where: { idx: bookIdx },
+        relations: ['review'],
+      })
     } catch (err) {
       throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
     }

@@ -25,6 +25,8 @@ export class AuthService {
         email: req.email,
         password: hash,
         name: req.name,
+        birth: req.birth,
+        male: req.male,
         provider: Provider.LOCAL,
       })
       return await this.userRepository.save(user)
@@ -133,7 +135,7 @@ export class AuthService {
     try {
       const number: number = await this.getRandomNumber()
       await this.mailerService.sendMail({
-        to: email,
+        to: 'inhoo987654321@gmail.com',
         from: 'inhoo25@naver.com',
         subject: '이메일 인증 요청 메일입니다.',
         html: '6자리 인증 코드 : ' + `<b> ${number}</b>`,
