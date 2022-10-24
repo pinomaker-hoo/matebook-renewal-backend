@@ -1,4 +1,12 @@
-import { Controller, Delete, Param, Post, Req, UseGuards } from '@nestjs/common'
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common'
 import JwtGuard from 'src/auth/passport/auth.jwt.guard'
 import { LikeBookService } from '../application/likeBook.service'
 
@@ -14,7 +22,13 @@ export class LikeBookController {
 
   @Delete('/:id')
   @UseGuards(JwtGuard)
-  async cancelLikeReview(@Param('id') id: string, @Req() req) {
+  async deleteLikeBook(@Param('id') id: string, @Req() req) {
     return await this.likeBookService.deleteLikeBook(req.user, Number(id))
+  }
+
+  @Get('/')
+  @UseGuards(JwtGuard)
+  async getLikeBookList(@Req() req) {
+    return await this.likeBookService.getLikeBookList(req.user)
   }
 }

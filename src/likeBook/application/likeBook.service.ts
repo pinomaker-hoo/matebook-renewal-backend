@@ -12,6 +12,18 @@ export class LikeBookService {
     private readonly bookService: BookService,
   ) {}
 
+  async getLikeBookList(user: User) {
+    try {
+      return await this.likeBookRepository.find({
+        where: { user },
+        relations: ['book', 'user'],
+      })
+    } catch (err) {
+      console.log(err)
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND)
+    }
+  }
+
   async saveLikeBook(user: User, bookIdx: number) {
     try {
       const book: Book = await this.bookService.findBookByIdx(bookIdx)
