@@ -34,7 +34,10 @@ export class ReviewService {
 
   async findReviewById(idx: number): Promise<Review> {
     try {
-      return await this.reviewRepository.findOne({ where: { idx } })
+      return await this.reviewRepository.findOne({
+        where: { idx },
+        relations: ['user'],
+      })
     } catch (err) {
       console.log(err)
       throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
