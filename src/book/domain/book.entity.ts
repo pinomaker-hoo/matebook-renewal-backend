@@ -1,4 +1,5 @@
 import { BaseTimeEntity } from 'src/common/entity/BaseTime.Entity'
+import { LikeBook } from 'src/likeBook/domain/likeBook.entity'
 import { Review } from 'src/review/domain/review.entity'
 import {
   Column,
@@ -37,4 +38,7 @@ export class Book extends BaseTimeEntity {
 
   @OneToMany((type) => Review, (review) => review.book)
   review: Review[]
+
+  @OneToMany((type) => LikeBook, (likeBook) => likeBook.book)
+  likeBook: LikeBook[]
 }

@@ -1,4 +1,5 @@
 import { BaseTimeEntity } from 'src/common/entity/BaseTime.Entity'
+import { LikeBook } from 'src/likeBook/domain/likeBook.entity'
 import { Mate } from 'src/mate/domain/mate.entity'
 import { Point } from 'src/point/domain/point.entity'
 import { Quiz } from 'src/quiz/domain/quiz.entity'
@@ -57,4 +58,7 @@ export class User extends BaseTimeEntity {
   @OneToOne((type) => Mate, (mate) => mate.user)
   @JoinColumn()
   mate: Mate
+
+  @OneToMany((type) => LikeBook, (likeBook) => likeBook.user)
+  likeBook: LikeBook[]
 }

@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { AuthModule } from './auth/auth.module'
 import { BookModule } from './book/book.module'
 import { CommentModule } from './comment/comment.module'
+import { LikeBookModule } from './likeBook/likeBook.module'
 import { MateModule } from './mate/mate.module'
 import { PointModule } from './point/point.module'
 import { QuizModule } from './quiz/quiz.module'
@@ -20,6 +21,7 @@ import { ReviewLikeModule } from './reviewLike/reviewLike.module'
     CommentModule,
     ReviewLikeModule,
     MateModule,
+    LikeBookModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [`${__dirname}/config/env/.${process.env.NODE_ENV}.env`],
