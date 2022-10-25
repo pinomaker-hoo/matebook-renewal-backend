@@ -6,11 +6,9 @@ import { MateService } from '../application/mate.service'
 export class MateController {
   constructor(private readonly mateService: MateService) {}
 
-  @Post()
+  @Post('/')
   @UseGuards(JwtGuard)
   async saveMate(@Req() req, @Body() body) {
-    const { user } = req
-    const { name } = body
-    return await this.mateService.saveMate(user, name)
+    return await this.mateService.saveMate(req.user, body.name)
   }
 }

@@ -10,8 +10,8 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { Response } from 'express'
+import { MateService } from 'src/mate/application/mate.service'
 import { AuthService } from '../application/auth.service'
-import { User } from '../domain/user.entity'
 import { MailDto } from '../dto/mail.dto'
 import ReqWithUser from '../dto/passport.req.dto'
 import { CreateUserDto } from '../dto/user.create.dto'
@@ -21,11 +21,19 @@ import { NaverGuard } from '../passport/auth.naver.guard'
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly mateService: MateService,
+  ) {}
 
   @Post()
-  async localSave(@Body() req: CreateUserDto): Promise<User> {
-    return await this.authService.localSave(req)
+  async localSave(@Body() req: CreateUserDto, @Res() res) {
+    const user = await this.authService.localSave(req)
+    const token = await this.authService.gwtJwtWithIdx(user.idx)
+    res.cookie('accessToken', token, {
+      maxAge: 24 * 60 * 60,
+    })
+    res.send(user)
   }
 
   @UseGuards(LocalGuard)
@@ -34,9 +42,9 @@ export class AuthController {
     const { user } = req
     const token = await this.authService.gwtJwtWithIdx(user.idx)
     res.cookie('accessToken', token, {
-      maxAge: 24 * 60 * 60,
+      expires: new Date(Date.now() + 86400e3),
     })
-    res.send('http://localhost:5173')
+    res.send({ user, token })
   }
 
   @Get('/kakao')
@@ -51,12 +59,13 @@ export class AuthController {
   @UseGuards(KakaoGuard)
   async kakaoCallBack(@Req() req, @Res() res: Response) {
     const token = await this.authService.kakaoLogin(req.user)
-    res.header('Access-Control-Allow-Origin', '*')
-    res.set('Authorization', 'Bearer ' + token)
     res.cookie('accessToken', token, {
-      maxAge: 24 * 60 * 60,
+      expires: new Date(Date.now() + 86400e3),
     })
-    res.redirect('http://localhost:5173')
+    const mate = await this.mateService.findMateById(req.user)
+    return mate
+      ? res.redirect('http://localhost:5173')
+      : res.redirect('http://localhost:5173/auth/info')
   }
 
   @Get('/naver')
@@ -71,12 +80,13 @@ export class AuthController {
   @UseGuards(NaverGuard)
   async naverCallBack(@Req() req, @Res() res: Response) {
     const token = await this.authService.naverLogin(req.user)
-    res.header('Access-Control-Allow-Origin', '*')
-    res.set('Authorization', 'Bearer ' + token)
     res.cookie('accessToken', token, {
       expires: new Date(Date.now() + 86400e3),
     })
-    res.redirect('http://localhost:5173')
+    const mate = await this.mateService.findMateById(req.user)
+    return mate
+      ? res.redirect('http://localhost:5173')
+      : res.redirect('http://localhost:5173/auth/info')
   }
 
   @Post('/mail')

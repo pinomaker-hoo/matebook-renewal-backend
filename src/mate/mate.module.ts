@@ -8,5 +8,6 @@ import { MateController } from './ui/mate.controller'
   imports: [TypeOrmModule.forFeature([MateRepository])],
   providers: [MateService],
   controllers: [MateController],
+  exports: [MateService],
 })
 export class MateModule {}

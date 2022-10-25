@@ -8,9 +8,7 @@ import { ReviewLike } from 'src/reviewLike/domain/reviewLike.entity'
 import {
   Column,
   Entity,
-  JoinColumn,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm'
@@ -55,9 +53,8 @@ export class User extends BaseTimeEntity {
   @OneToMany((type) => ReviewLike, (reviewLike) => reviewLike.user)
   reviewLike: ReviewLike[]
 
-  @OneToOne((type) => Mate, (mate) => mate.user)
-  @JoinColumn()
-  mate: Mate
+  @OneToMany((type) => Mate, (mate) => mate.user)
+  mate: Mate[]
 
   @OneToMany((type) => LikeBook, (likeBook) => likeBook.user)
   likeBook: LikeBook[]

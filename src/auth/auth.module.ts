@@ -12,6 +12,7 @@ import { KakaoStrategy } from './passport/auth.kakao.strategy'
 import { NaverStrategy } from './passport/auth.naver.strategy'
 import { MailerModule } from '@nestjs-modules/mailer'
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter'
+import { MateModule } from 'src/mate/mate.module'
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
         },
       }),
     }),
+    MateModule,
   ],
   controllers: [AuthController],
   providers: [

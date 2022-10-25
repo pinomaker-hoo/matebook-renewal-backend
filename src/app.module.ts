@@ -20,8 +20,8 @@ import { ReviewLikeModule } from './reviewLike/reviewLike.module'
     ReviewModule,
     CommentModule,
     ReviewLikeModule,
-    MateModule,
     LikeBookModule,
+    MateModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [`${__dirname}/config/env/.${process.env.NODE_ENV}.env`],
