@@ -16,7 +16,6 @@ export class NaverStrategy extends PassportStrategy(Strategy) {
 
   async validate(accessToken, refreshToken, profile, done) {
     const { id, displayName, emails } = profile
-
     const payload: NaverDto = {
       name: displayName,
       provider: Provider.NAVER,
