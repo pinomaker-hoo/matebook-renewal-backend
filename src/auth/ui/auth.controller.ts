@@ -31,7 +31,7 @@ export class AuthController {
     const user = await this.authService.localSave(req)
     const token = await this.authService.gwtJwtWithIdx(user.idx)
     res.cookie('accessToken', token, {
-      maxAge: 24 * 60 * 60,
+      expires: new Date(Date.now() + 86400e3),
     })
     res.send(user)
   }
