@@ -33,7 +33,7 @@ export class AuthController {
     res.cookie('accessToken', token, {
       expires: new Date(Date.now() + 86400e3),
     })
-    res.redirect('http://localhost:5173/auth/info')
+    res.send(user)
   }
 
   @UseGuards(LocalGuard)
