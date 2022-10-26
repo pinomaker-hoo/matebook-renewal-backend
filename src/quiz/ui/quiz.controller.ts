@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common'
 import JwtGuard from 'src/auth/passport/auth.jwt.guard'
 import { QuizService } from '../application/quiz.service'
 import { RequestSaveQuizDto } from '../dto/quiz.save.dto'
@@ -7,15 +15,24 @@ import { RequestSaveQuizDto } from '../dto/quiz.save.dto'
 export class QuizController {
   constructor(private readonly quizService: QuizService) {}
 
-  @Post()
+  @Post('/:id')
   @UseGuards(JwtGuard)
-  async saveQuiz(@Body() Body: RequestSaveQuizDto, @Req() req) {
+  async saveQuiz(
+    @Body() Body: RequestSaveQuizDto,
+    @Req() req,
+    @Param('id') id,
+  ) {
     const { user } = req
-    return await this.quizService.saveQuiz(user, Body.text, Body.answer)
+    return await this.quizService.saveQuiz(
+      user,
+      Body.text,
+      Body.answer,
+      Number(id),
+    )
   }
 
-  @Get()
-  async getQuizThree() {
-    return await this.quizService.getQuizThree()
+  @Get('/:id')
+  async getQuizList(@Param('id') id: string) {
+    return await this.quizService.getQuizListByBookIdx(Number(id))
   }
 }

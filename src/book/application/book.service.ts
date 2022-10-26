@@ -64,4 +64,13 @@ export class BookService {
       throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
     }
   }
+
+  async findBookByIdxForQuiz(bookIdx: number) {
+    try {
+      return await this.bookRepository.findOne({ where: { idx: bookIdx } })
+    } catch (err) {
+      console.log(err)
+      throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
+    }
+  }
 }

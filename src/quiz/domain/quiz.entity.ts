@@ -1,7 +1,14 @@
 import { User } from 'src/auth/domain/user.entity'
+import { Book } from 'src/book/domain/book.entity'
 import { BaseTimeEntity } from 'src/common/entity/BaseTime.Entity'
 import { Point } from 'src/point/domain/point.entity'
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm'
 import { QuizKind } from '../dto/quiz.kind.enum'
 
 @Entity({ name: 'tbl_quiz' })
@@ -23,4 +30,7 @@ export class Quiz extends BaseTimeEntity {
 
   @OneToMany((type) => User, (user) => user.quiz)
   user: User
+
+  @ManyToOne((type) => Book, (book) => book.quiz)
+  book: Book
 }
