@@ -33,7 +33,7 @@ export class AuthController {
     res.cookie('accessToken', token, {
       expires: new Date(Date.now() + 86400e3),
     })
-    res.send(user)
+    res.redirect('http://localhost:5173/auth/info')
   }
 
   @UseGuards(LocalGuard)
@@ -58,11 +58,12 @@ export class AuthController {
   @HttpCode(200)
   @UseGuards(KakaoGuard)
   async kakaoCallBack(@Req() req, @Res() res: Response) {
-    const token = await this.authService.kakaoLogin(req.user)
+    const user = await this.authService.kakaoLogin(req.user)
+    const token = await this.authService.gwtJwtWithIdx(user.idx)
     res.cookie('accessToken', token, {
       expires: new Date(Date.now() + 86400e3),
     })
-    const mate = await this.mateService.findMateById(req.user)
+    const mate = await this.mateService.findMateById(user)
     return mate
       ? res.redirect('http://localhost:5173')
       : res.redirect('http://localhost:5173/auth/info')
@@ -79,11 +80,12 @@ export class AuthController {
   @HttpCode(200)
   @UseGuards(NaverGuard)
   async naverCallBack(@Req() req, @Res() res: Response) {
-    const token = await this.authService.naverLogin(req.user)
+    const user = await this.authService.naverLogin(req.user)
+    const token = await this.authService.gwtJwtWithIdx(user.idx)
     res.cookie('accessToken', token, {
       expires: new Date(Date.now() + 86400e3),
     })
-    const mate = await this.mateService.findMateById(req.user)
+    const mate = await this.mateService.findMateById(user)
     return mate
       ? res.redirect('http://localhost:5173')
       : res.redirect('http://localhost:5173/auth/info')

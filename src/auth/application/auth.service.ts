@@ -28,6 +28,7 @@ export class AuthService {
         birth: req.birth,
         male: req.male,
         provider: Provider.LOCAL,
+        providerIdx: null,
       })
       return await this.userRepository.save(user)
     } catch (err) {
@@ -43,20 +44,21 @@ export class AuthService {
       await this.compareBcrypt(password, user.password)
       return user
     } catch (err) {
+      console.log(err)
       throw new HttpException('Not Found', HttpStatus.BAD_REQUEST)
     }
   }
 
   /** Kakao Login(Passport) */
-  async kakaoLogin(req: KakaoDto): Promise<string> {
+  async kakaoLogin(req: KakaoDto): Promise<User> {
     try {
       const findUser = await this.userRepository.findOne({
         where: { providerIdx: req.kakaoId },
       })
-      if (findUser) return await this.gwtJwtWithIdx(findUser.idx)
-      const saveUser = await this.kakaoSave(req)
-      return await this.gwtJwtWithIdx(saveUser.idx)
+      if (findUser) return findUser
+      return await this.kakaoSave(req)
     } catch (err) {
+      console.log(err)
       throw new HttpException('Not Found', HttpStatus.BAD_REQUEST)
     }
   }
@@ -69,37 +71,43 @@ export class AuthService {
         name: req.name,
         provider: req.provider,
         providerIdx: req.kakaoId,
+        birth: null,
+        password: null,
       })
-      const saveUser = await this.userRepository.save(user)
-      return saveUser
+      return await this.userRepository.save(user)
     } catch (err) {
+      console.log(err)
       throw new HttpException('Not Found!!', HttpStatus.BAD_REQUEST)
     }
   }
 
   /** Naver Login(Passport) */
-  async naverLogin(req: NaverDto) {
+  async naverLogin(req: NaverDto): Promise<User> {
     try {
       const findUser = await this.getUserbyProviderIdx(req.naverId)
-      if (findUser) return await this.gwtJwtWithIdx(findUser.idx)
-      const saveUser = await this.naverSave(req)
-      return await this.gwtJwtWithIdx(saveUser.idx)
+      if (findUser) return findUser
+      return await this.naverSave(req)
     } catch (err) {
+      console.log(err)
       throw new HttpException('Not Found', HttpStatus.BAD_REQUEST)
     }
   }
 
   /** Naver Save(Passport) */
-  async naverSave(req: NaverDto) {
+  async naverSave(req: NaverDto): Promise<User> {
     try {
       const user = this.userRepository.create({
         email: req.email,
         name: req.name,
         provider: req.provider,
         providerIdx: req.naverId,
+        male: null,
+        birth: null,
+        password: null,
       })
       return await this.userRepository.save(user)
     } catch (err) {
+      console.log(err)
       throw new HttpException('Not Found', HttpStatus.BAD_REQUEST)
     }
   }
