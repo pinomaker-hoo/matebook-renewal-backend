@@ -8,6 +8,7 @@ import { KakaoDto } from '../dto/passport.kakao.dto'
 import { NaverDto } from '../dto/passport.naver.dto'
 import { Provider } from '../dto/user.provider.enum'
 import { MailerService } from '@nestjs-modules/mailer'
+import { male } from 'src/config/env/node'
 
 @Injectable()
 export class AuthService {
@@ -143,8 +144,8 @@ export class AuthService {
     try {
       const number: number = await this.getRandomNumber()
       await this.mailerService.sendMail({
-        to: 'inhoo987654321@gmail.com',
-        from: 'inhoo25@naver.com',
+        to: email,
+        from: male.MALE_ID,
         subject: '이메일 인증 요청 메일입니다.',
         html: '6자리 인증 코드 : ' + `<b> ${number}</b>`,
       })

@@ -13,7 +13,6 @@ import { ReviewLikeModule } from './reviewLike/reviewLike.module'
 
 @Module({
   imports: [
-    AuthModule,
     BookModule,
     PointModule,
     QuizModule,
@@ -36,6 +35,7 @@ import { ReviewLikeModule } from './reviewLike/reviewLike.module'
       entities: ['dist/**/*.entity.js'],
       synchronize: true,
     }),
+    AuthModule,
   ],
   controllers: [],
   providers: [],

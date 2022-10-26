@@ -13,19 +13,20 @@ import { NaverStrategy } from './passport/auth.naver.strategy'
 import { MailerModule } from '@nestjs-modules/mailer'
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter'
 import { MateModule } from 'src/mate/mate.module'
+import { male } from 'src/config/env/node'
 
 @Module({
   imports: [
     ConfigModule,
     MailerModule.forRoot({
       transport: {
-        service: 'Naver',
-        host: 'smtp.naver.com',
-        port: 587,
+        host: male.MALE_HOST,
+        port: male.MALE_PORT,
         auth: {
-          user: 'inhoo25@naver.com',
-          pass: 'qwqw1595@!',
+          user: male.MALE_ID,
+          pass: male.GOOGLE_KEY,
         },
+        secure: true,
       },
       template: {
         dir: process.cwd() + '/template/',
