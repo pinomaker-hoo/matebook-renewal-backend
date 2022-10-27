@@ -15,6 +15,7 @@ import { AuthService } from '../application/auth.service'
 import { MailDto } from '../dto/mail.dto'
 import ReqWithUser from '../dto/passport.req.dto'
 import { CreateUserDto } from '../dto/user.create.dto'
+import JwtGuard from '../passport/auth.jwt.guard'
 import KakaoGuard from '../passport/auth.kakao.guard'
 import { LocalGuard } from '../passport/auth.local.guard'
 import { NaverGuard } from '../passport/auth.naver.guard'
@@ -94,5 +95,11 @@ export class AuthController {
   @Post('/mail')
   async sendMail(@Body() req: MailDto) {
     return this.authService.sendMail(req.email)
+  }
+
+  @Get()
+  @UseGuards(JwtGuard)
+  async getUserInfo(@Req() req) {
+    return await req.user
   }
 }
