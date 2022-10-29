@@ -154,6 +154,7 @@ export class AuthService {
       console.log(err)
     }
   }
+  
   async getRandomNumber() {
     let number = Math.floor(Math.random() * 1000000) + 100000
     if (number > 1000000) number -= 100000
