@@ -4,13 +4,18 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Patch,
   Post,
   Req,
   Res,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common'
+import { FilesInterceptor } from '@nestjs/platform-express'
 import { Response } from 'express'
 import { MateService } from 'src/mate/application/mate.service'
+import { multerDiskOptions } from 'src/utils/multerOption'
 import { AuthService } from '../application/auth.service'
 import { MailDto } from '../dto/mail.dto'
 import ReqWithUser from '../dto/passport.req.dto'
@@ -101,5 +106,13 @@ export class AuthController {
   @UseGuards(JwtGuard)
   async getUserInfo(@Req() req) {
     return await req.user
+  }
+
+  @Patch()
+  @UseGuards(JwtGuard)
+  @UseInterceptors(FilesInterceptor('files', null, multerDiskOptions))
+  async updateImage(@Req() req, @UploadedFiles() files) {
+    const { path } = files[0]
+    console.log(files)
   }
 }

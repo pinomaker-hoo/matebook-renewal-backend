@@ -9,6 +9,7 @@ import { NaverDto } from '../dto/passport.naver.dto'
 import { Provider } from '../dto/user.provider.enum'
 import { MailerService } from '@nestjs-modules/mailer'
 import { male } from 'src/config/env/node'
+import { UpdateValuesMissingError } from 'typeorm'
 
 @Injectable()
 export class AuthService {
@@ -30,6 +31,7 @@ export class AuthService {
         male: req.male,
         provider: Provider.LOCAL,
         providerIdx: null,
+        imgPath: null,
       })
       return await this.userRepository.save(user)
     } catch (err) {
@@ -154,10 +156,31 @@ export class AuthService {
       console.log(err)
     }
   }
-  
+
   async getRandomNumber() {
     let number = Math.floor(Math.random() * 1000000) + 100000
     if (number > 1000000) number -= 100000
     return number
   }
+
+  async updateImg(user: User, image: string) {
+    try {
+      const updateUser = await this.userRepository.update(user.idx, {
+        imgPath: image,
+      })
+      return updateUser
+    } catch (err) {
+      console.log(err)
+      throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
+    }
+  }
 }
+// async saveForm(user: User, image: string, number: string) {
+//   try {
+//     const form: Form = this.formRepository.create({ user, image, number })
+//     return await this.formRepository.save(form)
+//   } catch (err) {
+//     console.log(err)
+//     throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
+//   }
+// }

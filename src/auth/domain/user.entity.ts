@@ -35,6 +35,9 @@ export class User extends BaseTimeEntity {
   @Column({ type: 'varchar', nullable: true })
   birth: string
 
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  imgPath: string
+
   @Column({ nullable: true })
   providerIdx: string
 
