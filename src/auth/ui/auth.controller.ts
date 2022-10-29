@@ -105,7 +105,9 @@ export class AuthController {
   @Get()
   @UseGuards(JwtGuard)
   async getUserInfo(@Req() req) {
-    return await req.user
+    const { user } = req
+    const base = await this.authService.ImgToBase(user.imgPath)
+    return { user }
   }
 
   @Patch()
@@ -113,6 +115,6 @@ export class AuthController {
   @UseInterceptors(FilesInterceptor('files', null, multerDiskOptions))
   async updateImage(@Req() req, @UploadedFiles() files) {
     const { path } = files[0]
-    console.log(files)
+    return await this.authService.updateImg(req.user, path)
   }
 }

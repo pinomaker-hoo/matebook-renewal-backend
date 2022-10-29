@@ -9,7 +9,7 @@ import { NaverDto } from '../dto/passport.naver.dto'
 import { Provider } from '../dto/user.provider.enum'
 import { MailerService } from '@nestjs-modules/mailer'
 import { male } from 'src/config/env/node'
-import { UpdateValuesMissingError } from 'typeorm'
+import { encode } from 'node-base64-image'
 
 @Injectable()
 export class AuthService {
@@ -172,6 +172,16 @@ export class AuthService {
     } catch (err) {
       console.log(err)
       throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  async ImgToBase(image: string) {
+    try {
+      console.log(image)
+      const decode = await encode(`../../../${image}`)
+      console.log(decode)
+    } catch (err) {
+      console.log(err)
     }
   }
 }
