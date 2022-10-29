@@ -28,4 +28,16 @@ export class MateService {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
     }
   }
+
+  async findMateByJwt(user: User) {
+    try {
+      return await this.mateRepository.findOne({
+        where: { user: user.idx },
+        relations: ['user'],
+      })
+    } catch (err) {
+      console.log(err)
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
+    }
+  }
 }
