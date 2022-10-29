@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { ServeStaticModule } from '@nestjs/serve-static'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { join } from 'path'
 import { AuthModule } from './auth/auth.module'
 import { BookModule } from './book/book.module'
 import { CommentModule } from './comment/comment.module'
@@ -24,6 +26,9 @@ import { ReviewLikeModule } from './reviewLike/reviewLike.module'
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [`${__dirname}/config/env/.${process.env.NODE_ENV}.env`],
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(`${__dirname}/source/img`),
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
