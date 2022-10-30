@@ -106,7 +106,6 @@ export class AuthController {
   @UseGuards(JwtGuard)
   async getUserInfo(@Req() req) {
     const { user } = req
-    const base = await this.authService.ImgToBase(user.imgPath)
     return { user }
   }
 

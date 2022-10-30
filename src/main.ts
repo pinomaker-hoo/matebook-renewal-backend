@@ -13,6 +13,7 @@ async function bootstrap() {
     optionsSuccessStatus: 204,
     credentials: true,
   })
+  app.use(express.static('./src/source/img'))
   app.use(express.json({ limit: '50mb' }))
   app.use(express.urlencoded({ limit: '50mb', extended: true }))
   app.useGlobalPipes(new ValidationPipe())

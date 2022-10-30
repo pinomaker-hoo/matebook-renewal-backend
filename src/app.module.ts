@@ -27,9 +27,6 @@ import { ReviewLikeModule } from './reviewLike/reviewLike.module'
       isGlobal: true,
       envFilePath: [`${__dirname}/config/env/.${process.env.NODE_ENV}.env`],
     }),
-    ServeStaticModule.forRoot({
-      rootPath: join(`${__dirname}/source/img`),
-    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,

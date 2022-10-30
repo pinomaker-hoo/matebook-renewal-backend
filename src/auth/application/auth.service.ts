@@ -10,6 +10,8 @@ import { Provider } from '../dto/user.provider.enum'
 import { MailerService } from '@nestjs-modules/mailer'
 import { male } from 'src/config/env/node'
 import { encode } from 'node-base64-image'
+import fs from 'fs'
+import path from 'path'
 
 @Injectable()
 export class AuthService {
@@ -172,14 +174,6 @@ export class AuthService {
     } catch (err) {
       console.log(err)
       throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
-    }
-  }
-
-  async ImgToBase(image: string) {
-    try {
-      const decode = await encode(`../../../${image}`)
-    } catch (err) {
-      console.log(err)
     }
   }
 }
