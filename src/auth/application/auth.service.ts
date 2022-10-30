@@ -177,9 +177,7 @@ export class AuthService {
 
   async ImgToBase(image: string) {
     try {
-      console.log(image)
       const decode = await encode(`../../../${image}`)
-      console.log(decode)
     } catch (err) {
       console.log(err)
     }

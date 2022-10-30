@@ -21,7 +21,7 @@ export class MateController {
   async findMate(@Req() req) {
     const mate = await this.mateService.findMateByJwt(req.user)
     const point = await this.pointService.getPoint(req.user)
-    console.log(point)
+
     return { mate, point }
   }
 }

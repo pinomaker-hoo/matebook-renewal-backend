@@ -29,7 +29,6 @@ export class LikeBookController {
   @Get('/')
   @UseGuards(JwtGuard)
   async getLikeBookList(@Req() req) {
-    console.log(req.user)
     return await this.likeBookService.getLikeBookList(req.user)
   }
 }
