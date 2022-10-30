@@ -106,7 +106,7 @@ export class AuthController {
   @UseGuards(JwtGuard)
   async getUserInfo(@Req() req) {
     const { user } = req
-    return { user }
+    return user
   }
 
   @Patch()
