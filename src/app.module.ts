@@ -12,6 +12,7 @@ import { PointModule } from './point/point.module'
 import { QuizModule } from './quiz/quiz.module'
 import { ReviewModule } from './review/review.module'
 import { ReviewLikeModule } from './reviewLike/reviewLike.module'
+import { UserBookModule } from './userBook/userBook.module'
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { ReviewLikeModule } from './reviewLike/reviewLike.module'
       synchronize: true,
     }),
     AuthModule,
+    UserBookModule,
   ],
   controllers: [],
   providers: [],

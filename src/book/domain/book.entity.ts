@@ -2,6 +2,7 @@ import { BaseTimeEntity } from 'src/common/entity/BaseTime.Entity'
 import { LikeBook } from 'src/likeBook/domain/likeBook.entity'
 import { Quiz } from 'src/quiz/domain/quiz.entity'
 import { Review } from 'src/review/domain/review.entity'
+import { UserBook } from 'src/userBook/domain/userBook.entity'
 import {
   Column,
   Entity,
@@ -45,4 +46,7 @@ export class Book extends BaseTimeEntity {
 
   @OneToMany((type) => Quiz, (quiz) => quiz.book)
   quiz: Quiz[]
+
+  @OneToMany((type) => UserBook, (userBook) => userBook.book)
+  userBook: UserBook[]
 }
