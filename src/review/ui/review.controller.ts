@@ -28,6 +28,6 @@ export class ReviewController {
 
   @Get('/list/:id')
   async getReviewList(@Param('id') id: string) {
-    return await this.reviewService.findBookList(Number(id))
+    return await this.reviewService.findReviewListByBook(Number(id))
   }
 }

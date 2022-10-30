@@ -23,9 +23,12 @@ export class ReviewService {
     }
   }
 
-  async findBookList(idx: number): Promise<Review[]> {
+  async findReviewListByBook(bookIdx: number): Promise<Review[]> {
     try {
-      return await this.reviewRepository.find({ where: { idx } })
+      return await this.reviewRepository.find({
+        where: { book: bookIdx },
+        relations: ['user'],
+      })
     } catch (err) {
       console.log(err)
       throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
