@@ -21,7 +21,7 @@ export class PointService {
       const point: Point[] = await this.pointRepository.find({
         where: { user: user.idx },
       })
-      let sumPoint: number
+      let sumPoint: number = 0
       for (const item of point) {
         sumPoint += item.point
       }
