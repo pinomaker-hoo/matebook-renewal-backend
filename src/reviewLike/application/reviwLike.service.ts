@@ -54,4 +54,15 @@ export class ReviewLikeService {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND)
     }
   }
+  async getReviewLikeList(reviewIdx: number) {
+    try {
+      return await this.reviewLikeRepository.find({
+        where: { review: reviewIdx },
+        relations: ['user'],
+      })
+    } catch (err) {
+      console.log(err)
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND)
+    }
+  }
 }
