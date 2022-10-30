@@ -18,7 +18,7 @@ export class ReviewLikeController {
   @UseGuards(JwtGuard)
   async likeReview(@Param('id') id: string, @Req() req) {
     const { user } = req
-    return await this.reviewLikeService.likeReview(user, Number(id))
+    return await this.reviewLikeService.testLike(user, Number(id))
   }
 
   @Delete('/:id')

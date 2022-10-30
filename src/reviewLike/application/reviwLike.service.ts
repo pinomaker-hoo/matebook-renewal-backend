@@ -31,12 +31,14 @@ export class ReviewLikeService {
     try {
       const review: Review = await this.reviewService.findReviewById(reviewIdx)
       const liked: boolean = await this.getLiked(user, review)
+      console.log(liked)
       if (!liked)
         return new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
       const reviewLike: ReviewLike = await this.reviewLikeRepository.findOne({
         where: { user, review },
       })
-      return await this.reviewLikeRepository.delete(reviewLike)
+      console.log(reviewLike)
+      return await this.reviewLikeRepository.delete(reviewLike.idx)
     } catch (err) {
       console.log(err)
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
@@ -46,7 +48,7 @@ export class ReviewLikeService {
   async getLiked(user: User, review: Review) {
     try {
       const reviewLike: ReviewLike = await this.reviewLikeRepository.findOne({
-        where: { user, review },
+        where: { user, review: review.idx },
       })
       return reviewLike ? true : false
     } catch (err) {
@@ -54,6 +56,7 @@ export class ReviewLikeService {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND)
     }
   }
+
   async getReviewLikeList(reviewIdx: number) {
     try {
       return await this.reviewLikeRepository.find({
@@ -63,6 +66,28 @@ export class ReviewLikeService {
     } catch (err) {
       console.log(err)
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND)
+    }
+  }
+  async testLike(user: User, reviewIdx: number) {
+    try {
+      const review: Review = await this.reviewService.findReviewById(reviewIdx)
+      const liked: boolean = await this.getLiked(user, review)
+      if (liked) {
+        const reviewLike: ReviewLike = await this.reviewLikeRepository.findOne({
+          where: { user, review },
+        })
+        await this.reviewLikeRepository.delete(reviewLike.idx)
+        return false
+      } else {
+        const reviewLike: ReviewLike = this.reviewLikeRepository.create({
+          user,
+          review,
+        })
+        await this.reviewLikeRepository.save(reviewLike)
+        return true
+      }
+    } catch (err) {
+      console.log(err)
     }
   }
 }
