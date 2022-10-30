@@ -70,9 +70,12 @@ export class AuthController {
       expires: new Date(Date.now() + 86400e3),
     })
     const mate = await this.mateService.findMateById(user)
+    // return mate
+    //   ? res.redirect('http://localhost:5173')
+    //   : res.redirect('http://localhost:5173/auth/info')
     return mate
-      ? res.redirect('http://localhost:5173')
-      : res.redirect('http://localhost:5173/auth/info')
+      ? res.redirect('http://210.90.136.10:5173')
+      : res.redirect('http://210.90.136.10:5173/auth/info')
   }
 
   @Get('/naver')
@@ -92,9 +95,12 @@ export class AuthController {
       expires: new Date(Date.now() + 86400e3),
     })
     const mate = await this.mateService.findMateById(user)
+    // return mate
+    //   ? res.redirect('http://localhost:5173')
+    //   : res.redirect('http://localhost:5173/auth/info')
     return mate
-      ? res.redirect('http://localhost:5173')
-      : res.redirect('http://localhost:5173/auth/info')
+      ? res.redirect('http://210.90.136.10:5173')
+      : res.redirect('http://210.90.136.10:5173/auth/info')
   }
 
   @Post('/mail')

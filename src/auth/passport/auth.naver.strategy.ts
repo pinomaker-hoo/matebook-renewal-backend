@@ -10,7 +10,8 @@ export class NaverStrategy extends PassportStrategy(Strategy) {
     super({
       clientID: 'mfvgn8HnVR6pfLot_vbg',
       clientSecret: '6nuPvrSxDN',
-      callbackURL: 'http://localhost:8003/auth/naver/callback',
+      callbackURL: 'http://210.90.136.10:8003/auth/naver/callback',
+      // callbackURL: 'http://localhost:8003/auth/naver/callback',
     })
   }
 
