@@ -15,4 +15,20 @@ export class PointService {
       throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
     }
   }
+
+  async getPoint(user: User) {
+    try {
+      const point: Point[] = await this.pointRepository.find({
+        where: { user: user.idx },
+      })
+      let sumPoint: number
+      for (const item of point) {
+        sumPoint += item.point
+      }
+      return sumPoint
+    } catch (err) {
+      console.log(err)
+      throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
+    }
+  }
 }
