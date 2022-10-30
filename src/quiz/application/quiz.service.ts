@@ -40,16 +40,15 @@ export class QuizService {
       return await this.quizRepository.find({
         where: { book: idx },
       })
-      // const ReturnQuizList: Quiz[] = []
-      // for (let i = 0; i < 3; i++) {
-      //   let r = parseInt(Math.floor(Math.random() * 10).toFixed())
-      //   if (r > findQuizList.length) {
-      //     ReturnQuizList.push(findQuizList[r - findQuizList.length])
-      //   } else {
-      //     ReturnQuizList.push(findQuizList[r])
-      //   }
-      // }
-      // return ReturnQuizList
+    } catch (err) {
+      console.log(err)
+      throw new HttpException('ERROR', HttpStatus.NOT_FOUND)
+    }
+  }
+
+  async findQuizByIdx(idx: number) {
+    try {
+      return await this.quizRepository.findOne({ where: { idx } })
     } catch (err) {
       console.log(err)
       throw new HttpException('ERROR', HttpStatus.NOT_FOUND)

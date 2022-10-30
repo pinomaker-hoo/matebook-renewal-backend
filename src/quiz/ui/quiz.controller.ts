@@ -35,4 +35,9 @@ export class QuizController {
   async getQuizList(@Param('id') id: string) {
     return await this.quizService.getQuizListByBookIdx(Number(id))
   }
+
+  @Get('/quiz/:id')
+  async getQuiz(@Param('id') id: string) {
+    return await this.quizService.findQuizByIdx(Number(id))
+  }
 }
