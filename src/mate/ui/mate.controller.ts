@@ -1,10 +1,14 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common'
 import JwtGuard from 'src/auth/passport/auth.jwt.guard'
+import { PointService } from 'src/point/application/point.service'
 import { MateService } from '../application/mate.service'
 
 @Controller('mate')
 export class MateController {
-  constructor(private readonly mateService: MateService) {}
+  constructor(
+    private readonly mateService: MateService,
+    private readonly pointService: PointService,
+  ) {}
 
   @Post('/')
   @UseGuards(JwtGuard)
@@ -15,6 +19,8 @@ export class MateController {
   @Get('/')
   @UseGuards(JwtGuard)
   async findMate(@Req() req) {
-    return await this.mateService.findMateByJwt(req.user)
+    const mate = await this.mateService.findMateByJwt(req.user)
+    const point = await this.pointService.getPoint(req.user)
+    return { mate, point }
   }
 }
