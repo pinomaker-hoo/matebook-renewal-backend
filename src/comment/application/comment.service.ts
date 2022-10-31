@@ -12,6 +12,13 @@ export class CommentService {
     private readonly reviewService: ReviewService,
   ) {}
 
+  /**
+   * Comment 저장 함수
+   * @param {User}user
+   * @param {string}text
+   * @param {number}reviewIdx
+   * @returns  {Comment}
+   */
   async saveComment(user: User, text: string, reviewIdx: number) {
     try {
       const review: Review = await this.reviewService.findReviewById(reviewIdx)
@@ -27,6 +34,11 @@ export class CommentService {
     }
   }
 
+  /**
+   * ReviewIdx를 활용한 Comment List Find 함수
+   * @param {number}reviewIdx
+   * @returns {Comment[]}
+   */
   async getCommentList(reviewIdx: number): Promise<Comment[]> {
     try {
       return await this.commentRepository.find({ where: { review: reviewIdx } })
