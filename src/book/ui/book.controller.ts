@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common'
+import { ApiResponse } from 'src/common/dto/api.response'
 import { BookService } from '../application/book.service'
 import { BookSaveDto } from '../dto/book.save.dto'
 
@@ -8,21 +9,41 @@ export class BookController {
 
   @Post()
   async saveBook(@Body() req: BookSaveDto) {
-    return await this.bookService.saveBook(req)
+    const response = await this.bookService.saveBook(req)
+    return ApiResponse.of({
+      data: response,
+      message: 'Success Save Book',
+      statusCode: 200,
+    })
   }
 
   @Get()
   async findBookList() {
-    return await this.bookService.findBookList()
+    const response = await this.bookService.findBookList()
+    return ApiResponse.of({
+      data: response,
+      message: 'Success Find Book List',
+      statusCode: 200,
+    })
   }
 
   @Get('/:id')
   async findBook(@Param('id') idx: string) {
-    return await this.bookService.findBookByIdx(Number(idx))
+    const response = await this.bookService.findBookByIdx(Number(idx))
+    return ApiResponse.of({
+      data: response,
+      message: 'Success Find Book',
+      statusCode: 200,
+    })
   }
 
   @Get('/count/:id')
   async findBookListCount(@Param('id') idx: string) {
-    return await this.bookService.findBookListCount(Number(idx))
+    const response = await this.bookService.findBookListCount(Number(idx))
+    return ApiResponse.of({
+      data: response,
+      message: 'Success Find BookList',
+      statusCode: 200,
+    })
   }
 }
