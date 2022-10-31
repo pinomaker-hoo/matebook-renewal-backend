@@ -12,7 +12,12 @@ export class LikeBookService {
     private readonly bookService: BookService,
   ) {}
 
-  async getLikeBookList(user: User) {
+  /**
+   * LikeBook Find List With Book, User 함수
+   * @param {User} user
+   * @returns {LikeBook[]}
+   */
+  async getLikeBookListWithBookAndUser(user: User) {
     try {
       return await this.likeBookRepository.find({
         where: { user },
@@ -24,6 +29,12 @@ export class LikeBookService {
     }
   }
 
+  /**
+   * LikeBook 저장 함수
+   * @param {User} user
+   * @param {number}bookIdx
+   * @returns {LikeBook}
+   */
   async saveLikeBook(user: User, bookIdx: number) {
     try {
       const book: Book = await this.bookService.findBookByIdx(bookIdx)
@@ -41,6 +52,12 @@ export class LikeBookService {
     }
   }
 
+  /**
+   * LikeBook 삭제 함수
+   * @param {User}user
+   * @param {number}bookIdx
+   * @returns
+   */
   async deleteLikeBook(user: User, bookIdx: number) {
     try {
       const book: Book = await this.bookService.findBookByIdx(bookIdx)
@@ -57,6 +74,12 @@ export class LikeBookService {
     }
   }
 
+  /**
+   * LikeBook 조회 함수
+   * @param {User}user
+   * @param {Book} book
+   * @returns {boolean}
+   */
   async findLikeBook(user: User, book: Book) {
     try {
       const likeBook: LikeBook = await this.likeBookRepository.findOne({

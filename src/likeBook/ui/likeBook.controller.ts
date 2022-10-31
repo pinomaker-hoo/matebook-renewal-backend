@@ -46,10 +46,12 @@ export class LikeBookController {
   @Get('/')
   @UseGuards(JwtGuard)
   async getLikeBookList(@Req() req) {
-    const response = await this.likeBookService.getLikeBookList(req.user)
+    const response = await this.likeBookService.getLikeBookListWithBookAndUser(
+      req.user,
+    )
     return ApiResponse.of({
       data: response,
-      message: 'Success Find Comment',
+      message: 'Success Find LikeBookList',
       statusCode: 200,
     })
   }
