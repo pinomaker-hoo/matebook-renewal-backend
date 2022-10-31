@@ -11,6 +11,13 @@ export class UserBookService {
     private readonly userBookRepository: UserBookRepository,
     private readonly bookService: BookService,
   ) {}
+
+  /**
+   * UserBook 저장 함수
+   * @param user
+   * @param bookIdx
+   * @returns
+   */
   async saveUserBook(user: User, bookIdx: number) {
     try {
       const book: Book = await this.bookService.findBookByIdx(bookIdx)
@@ -27,6 +34,11 @@ export class UserBookService {
     }
   }
 
+  /**
+   * UserBook 조회 함수
+   * @param idx
+   * @returns
+   */
   async findUserBookByBookIdx(idx: number) {
     try {
       return await this.userBookRepository.findOne({ where: { book: idx } })
@@ -36,6 +48,11 @@ export class UserBookService {
     }
   }
 
+  /**
+   * UserBook List 조회 함수
+   * @param user
+   * @returns
+   */
   async findUserBookListByUserIdx(user: User) {
     try {
       return await this.userBookRepository.find({ where: { user: user.idx } })
