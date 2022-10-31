@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import JwtGuard from 'src/auth/passport/auth.jwt.guard'
+import { ApiResponse } from 'src/common/dto/api.response'
 import { QuizService } from '../application/quiz.service'
 import { RequestSaveQuizDto } from '../dto/quiz.save.dto'
 
@@ -23,21 +24,36 @@ export class QuizController {
     @Param('id') id,
   ) {
     const { user } = req
-    return await this.quizService.saveQuiz(
+    const response = await this.quizService.saveQuiz(
       user,
       Body.text,
       Body.answer,
       Number(id),
     )
+    return ApiResponse.of({
+      data: response,
+      message: 'Success Save Quiz',
+      statusCode: 200,
+    })
   }
 
   @Get('/:id')
   async getQuizList(@Param('id') id: string) {
-    return await this.quizService.getQuizListByBookIdx(Number(id))
+    const response = await this.quizService.getQuizListByBookIdx(Number(id))
+    return ApiResponse.of({
+      data: response,
+      message: 'Success Find Quiz List',
+      statusCode: 200,
+    })
   }
 
   @Get('/quiz/:id')
   async getQuiz(@Param('id') id: string) {
-    return await this.quizService.findQuizByIdx(Number(id))
+    const response = await this.quizService.findQuizByIdx(Number(id))
+    return ApiResponse.of({
+      data: response,
+      message: 'Success Find Quiz',
+      statusCode: 200,
+    })
   }
 }

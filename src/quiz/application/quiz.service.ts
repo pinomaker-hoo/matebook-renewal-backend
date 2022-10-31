@@ -13,6 +13,14 @@ export class QuizService {
     private readonly bookService: BookService,
   ) {}
 
+  /**
+   * Quiz 저장 함수
+   * @param {User}user
+   * @param {string}text
+   * @param {boolean}answer
+   * @param {number}idx
+   * @returns {User}
+   */
   async saveQuiz(
     user: User,
     text: string,
@@ -35,6 +43,11 @@ export class QuizService {
     }
   }
 
+  /**
+   * BookIdx를 이용한 Quiz List 조회 함수
+   * @param {number} idx
+   * @returns {Quiz[]}
+   */
   async getQuizListByBookIdx(idx: number) {
     try {
       return await this.quizRepository.find({
@@ -46,6 +59,11 @@ export class QuizService {
     }
   }
 
+  /**
+   * Quiz 조회 함수
+   * @param {number}idx
+   * @returns  {Quiz}
+   */
   async findQuizByIdx(idx: number) {
     try {
       return await this.quizRepository.findOne({ where: { idx } })
