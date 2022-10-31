@@ -74,7 +74,7 @@ export class AuthController {
     //   ? res.redirect('http://localhost:5173')
     //   : res.redirect('http://localhost:5173/auth/info')
     return mate
-      ? res.redirect('http://210.90.136.10:5173')
+      ? res.redirect('http://210.90.136.10:5173/home')
       : res.redirect('http://210.90.136.10:5173/auth/info')
   }
 
@@ -99,7 +99,7 @@ export class AuthController {
     //   ? res.redirect('http://localhost:5173')
     //   : res.redirect('http://localhost:5173/auth/info')
     return mate
-      ? res.redirect('http://210.90.136.10:5173')
+      ? res.redirect('http://210.90.136.10:5173/home')
       : res.redirect('http://210.90.136.10:5173/auth/info')
   }
 
