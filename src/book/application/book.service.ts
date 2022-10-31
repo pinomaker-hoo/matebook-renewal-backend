@@ -7,9 +7,14 @@ import { BookRepository } from '../infrastructure/book.repository'
 export class BookService {
   constructor(private readonly bookRepository: BookRepository) {}
 
+  /**
+   * Book 저장 함수
+   * @param {BookSaveDto} req
+   * @returns {Book}
+   */
   async saveBook(req: BookSaveDto) {
     try {
-      const findBook = await this.findBook(req.isbn)
+      const findBook: Book[] = await this.findBookList(req.isbn)
       if (findBook.length > 0) return findBook
       const book = this.bookRepository.create({
         title: req.title,
@@ -26,7 +31,12 @@ export class BookService {
     }
   }
 
-  async findBook(isbn: string) {
+  /**
+   * Book List 조회 함수
+   * @param {string} isbn
+   * @returns {Book[]}
+   */
+  async findBookList(isbn: string) {
     try {
       return await this.bookRepository.find({ where: { isbn } })
     } catch (err) {
@@ -35,26 +45,28 @@ export class BookService {
     }
   }
 
-  async findBookList() {
-    try {
-      return await this.bookRepository.findOne()
-    } catch (err) {
-      console.log(err)
-      throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
-    }
-  }
-
-  async findBookByIdx(bookIdx: number) {
+  /**
+   * BookIdx를 활용한 Book With review 조회 함수
+   * @param {number}bookIdx
+   * @returns {Book}
+   */
+  async findBookByIdxWithReview(bookIdx: number) {
     try {
       return await this.bookRepository.findOne({
         where: { idx: bookIdx },
         relations: ['review'],
       })
     } catch (err) {
+      console.log(err)
       throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
     }
   }
 
+  /**
+   * 원하는 개수의 Book List 조회 함수
+   * @param {number}count
+   * @returns {Book[]}
+   */
   async findBookListCount(count: number) {
     try {
       const bookList: Book[] = await this.bookRepository.find()
@@ -65,18 +77,14 @@ export class BookService {
     }
   }
 
-  async findBookByIdxForQuiz(bookIdx: number) {
+  /**
+   * BookIdx를 이용한 Book 조회
+   * @param {number} bookIdx
+   * @returns {Book}
+   */
+  async findBookByIdx(bookIdx: number) {
     try {
       return await this.bookRepository.findOne({ where: { idx: bookIdx } })
-    } catch (err) {
-      console.log(err)
-      throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
-    }
-  }
-
-  async findBookByIdxForRead(idx: number) {
-    try {
-      return await this.bookRepository.findOne({ where: { idx } })
     } catch (err) {
       console.log(err)
       throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)

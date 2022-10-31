@@ -13,7 +13,7 @@ export class UserBookService {
   ) {}
   async saveUserBook(user: User, bookIdx: number) {
     try {
-      const book: Book = await this.bookService.findBookByIdxForRead(bookIdx)
+      const book: Book = await this.bookService.findBookByIdx(bookIdx)
       const readBook: UserBook = await this.findUserBookByBookIdx(book.idx)
       if (readBook) return readBook
       const saveBook: UserBook = this.userBookRepository.create({

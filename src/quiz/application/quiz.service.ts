@@ -20,7 +20,7 @@ export class QuizService {
     idx: number,
   ): Promise<Quiz> {
     try {
-      const book: Book = await this.bookService.findBookByIdxForQuiz(idx)
+      const book: Book = await this.bookService.findBookByIdx(idx)
       const quiz = this.quizRepository.create({
         text,
         answer,

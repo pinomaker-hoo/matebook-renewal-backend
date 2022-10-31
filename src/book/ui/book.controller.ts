@@ -17,19 +17,9 @@ export class BookController {
     })
   }
 
-  @Get()
-  async findBookList() {
-    const response = await this.bookService.findBookList()
-    return ApiResponse.of({
-      data: response,
-      message: 'Success Find Book List',
-      statusCode: 200,
-    })
-  }
-
   @Get('/:id')
   async findBook(@Param('id') idx: string) {
-    const response = await this.bookService.findBookByIdx(Number(idx))
+    const response = await this.bookService.findBookByIdxWithReview(Number(idx))
     return ApiResponse.of({
       data: response,
       message: 'Success Find Book',
