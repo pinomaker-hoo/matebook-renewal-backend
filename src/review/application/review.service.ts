@@ -12,6 +12,13 @@ export class ReviewService {
     private readonly bookService: BookService,
   ) {}
 
+  /**
+   * Review 저장 함수
+   * @param {User}user
+   * @param {number}bookIdx
+   * @param {string}text
+   * @returns
+   */
   async saveReview(user: User, bookIdx: number, text: string): Promise<Review> {
     try {
       const book: Book = await this.bookService.findBookByIdx(bookIdx)
@@ -23,7 +30,12 @@ export class ReviewService {
     }
   }
 
-  async findReviewListByBook(bookIdx: number): Promise<Review[]> {
+  /**
+   * BookIdx를 활용한 Review List With User 조회 함수
+   * @param {number}bookIdx
+   * @returns {Review[]}
+   */
+  async findReviewListWithUser(bookIdx: number): Promise<Review[]> {
     try {
       return await this.reviewRepository.find({
         where: { book: bookIdx },
@@ -35,7 +47,12 @@ export class ReviewService {
     }
   }
 
-  async findReviewById(idx: number): Promise<Review> {
+  /**
+   * Review With User 조회 함수
+   * @param {number}idx
+   * @returns {Review}
+   */
+  async findReviewWithUser(idx: number): Promise<Review> {
     try {
       return await this.reviewRepository.findOne({
         where: { idx },

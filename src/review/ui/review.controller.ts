@@ -8,14 +8,21 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import JwtGuard from 'src/auth/passport/auth.jwt.guard'
+import { ApiResponse } from 'src/common/dto/api.response'
 import { ReviewService } from '../application/review.service'
 
 @Controller('review')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
+
   @Get('/:id')
   async getReview(@Param('id') id: string) {
-    return await this.reviewService.findReviewById(Number(id))
+    const response = await this.reviewService.findReviewWithUser(Number(id))
+    return ApiResponse.of({
+      data: response,
+      message: 'Success Find Review',
+      statusCode: 200,
+    })
   }
 
   @Post('/:id')
@@ -23,11 +30,25 @@ export class ReviewController {
   async saveReview(@Req() req, @Param('id') idx: string, @Body() body) {
     const { user } = req
     const { text } = body
-    return await this.reviewService.saveReview(user, Number(idx), text)
+    const response = await this.reviewService.saveReview(
+      user,
+      Number(idx),
+      text,
+    )
+    return ApiResponse.of({
+      data: response,
+      message: 'Success Save Review',
+      statusCode: 200,
+    })
   }
 
   @Get('/list/:id')
   async getReviewList(@Param('id') id: string) {
-    return await this.reviewService.findReviewListByBook(Number(id))
+    const response = await this.reviewService.findReviewListWithUser(Number(id))
+    return ApiResponse.of({
+      data: response,
+      message: 'Success Find Review',
+      statusCode: 200,
+    })
   }
 }

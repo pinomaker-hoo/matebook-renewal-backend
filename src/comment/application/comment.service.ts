@@ -21,7 +21,9 @@ export class CommentService {
    */
   async saveComment(user: User, text: string, reviewIdx: number) {
     try {
-      const review: Review = await this.reviewService.findReviewById(reviewIdx)
+      const review: Review = await this.reviewService.findReviewWithUser(
+        reviewIdx,
+      )
       const comment: Comment = this.commentRepository.create({
         user,
         text,

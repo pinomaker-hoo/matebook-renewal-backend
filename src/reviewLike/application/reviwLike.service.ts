@@ -14,7 +14,9 @@ export class ReviewLikeService {
 
   async likeReview(user: User, reviewIdx: number) {
     try {
-      const review: Review = await this.reviewService.findReviewById(reviewIdx)
+      const review: Review = await this.reviewService.findReviewWithUser(
+        reviewIdx,
+      )
       const liked: boolean = await this.getLiked(user, review)
       if (liked) return new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
       const reviewLike: ReviewLike = this.reviewLikeRepository.create({
@@ -29,7 +31,9 @@ export class ReviewLikeService {
 
   async cancelLike(user: User, reviewIdx: number) {
     try {
-      const review: Review = await this.reviewService.findReviewById(reviewIdx)
+      const review: Review = await this.reviewService.findReviewWithUser(
+        reviewIdx,
+      )
       const liked: boolean = await this.getLiked(user, review)
       console.log(liked)
       if (!liked)
@@ -70,7 +74,9 @@ export class ReviewLikeService {
   }
   async testLike(user: User, reviewIdx: number) {
     try {
-      const review: Review = await this.reviewService.findReviewById(reviewIdx)
+      const review: Review = await this.reviewService.findReviewWithUser(
+        reviewIdx,
+      )
       const liked: boolean = await this.getLiked(user, review)
       if (liked) {
         const reviewLike: ReviewLike = await this.reviewLikeRepository.findOne({
