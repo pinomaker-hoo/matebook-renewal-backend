@@ -12,7 +12,13 @@ export class ReviewLikeService {
     private readonly reviewService: ReviewService,
   ) {}
 
-  async likeReview(user: User, reviewIdx: number) {
+  /**
+   * LikeReview 저장 함수
+   * @param {User}user
+   * @param {number}reviewIdx
+   * @returns
+   */
+  async saveLikeReview(user: User, reviewIdx: number) {
     try {
       const review: Review = await this.reviewService.findReviewWithUser(
         reviewIdx,
@@ -29,19 +35,23 @@ export class ReviewLikeService {
     }
   }
 
+  /**
+   * LikeReview 취소 함수
+   * @param {User}user
+   * @param {number}reviewIdx
+   * @returns
+   */
   async cancelLike(user: User, reviewIdx: number) {
     try {
       const review: Review = await this.reviewService.findReviewWithUser(
         reviewIdx,
       )
       const liked: boolean = await this.getLiked(user, review)
-      console.log(liked)
       if (!liked)
         return new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
       const reviewLike: ReviewLike = await this.reviewLikeRepository.findOne({
         where: { user, review },
       })
-      console.log(reviewLike)
       return await this.reviewLikeRepository.delete(reviewLike.idx)
     } catch (err) {
       console.log(err)
@@ -49,6 +59,12 @@ export class ReviewLikeService {
     }
   }
 
+  /**
+   * ReviewLike 조회 함수
+   * @param user
+   * @param review
+   * @returns
+   */
   async getLiked(user: User, review: Review) {
     try {
       const reviewLike: ReviewLike = await this.reviewLikeRepository.findOne({
@@ -61,6 +77,11 @@ export class ReviewLikeService {
     }
   }
 
+  /**
+   * ReviewLike List With User 조회 함수
+   * @param reviewIdx
+   * @returns
+   */
   async getReviewLikeList(reviewIdx: number) {
     try {
       return await this.reviewLikeRepository.find({
@@ -72,6 +93,8 @@ export class ReviewLikeService {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND)
     }
   }
+
+  /** 임시로 사용하는 함수 */
   async testLike(user: User, reviewIdx: number) {
     try {
       const review: Review = await this.reviewService.findReviewWithUser(
