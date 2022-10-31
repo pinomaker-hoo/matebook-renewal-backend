@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common'
 import { FilesInterceptor } from '@nestjs/platform-express'
 import { Response } from 'express'
+import { ApiResponse } from 'src/common/dto/api.response'
 import { MateService } from 'src/mate/application/mate.service'
 import { multerDiskOptions } from 'src/utils/multerOption'
 import { AuthService } from '../application/auth.service'
@@ -105,14 +106,23 @@ export class AuthController {
 
   @Post('/mail')
   async sendMail(@Body() req: MailDto) {
-    return this.authService.sendMail(req.email)
+    const response = await this.authService.sendMail(req.email)
+    return ApiResponse.of({
+      data: response,
+      message: 'Success Send Mail',
+      statusCode: 200,
+    })
   }
 
   @Get()
   @UseGuards(JwtGuard)
   async getUserInfo(@Req() req) {
-    const { user } = req
-    return user
+    const { user: response } = req
+    return ApiResponse.of({
+      data: response,
+      message: 'success Find User Info',
+      statusCode: 200,
+    })
   }
 
   @Patch()
@@ -120,6 +130,11 @@ export class AuthController {
   @UseInterceptors(FilesInterceptor('files', null, multerDiskOptions))
   async updateImage(@Req() req, @UploadedFiles() files) {
     const { path } = files[0]
-    return await this.authService.updateImg(req.user, path)
+    const response = await this.authService.updateImg(req.user, path)
+    return ApiResponse.of({
+      data: response,
+      message: 'Success Change Image File',
+      statusCode: 200,
+    })
   }
 }
