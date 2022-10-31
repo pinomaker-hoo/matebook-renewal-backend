@@ -26,7 +26,7 @@ export class MateController {
   @UseGuards(JwtGuard)
   async findMate(@Req() req) {
     const mate = await this.mateService.findMateWithUser(req.user)
-    const point = await this.pointService.getPoint(req.user)
+    const point = await this.pointService.getSumPoint(req.user)
     const response = { mate, point }
     return ApiResponse.of({
       data: response,

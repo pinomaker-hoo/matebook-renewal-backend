@@ -6,6 +6,13 @@ import { Point } from '../domain/point.entity'
 @Injectable()
 export class PointService {
   constructor(private readonly pointRepository: PointRepository) {}
+
+  /**
+   * Point 저장 함수
+   * @param {User}user
+   * @param {number}point
+   * @returns {Point}
+   */
   async savePoint(user: User, point: number): Promise<Point> {
     try {
       const savePoint: Point = this.pointRepository.create({ user, point })
@@ -16,7 +23,12 @@ export class PointService {
     }
   }
 
-  async getPoint(user: User) {
+  /**
+   * 보유한 Point를 조회 후 합하는 함수
+   * @param user
+   * @returns
+   */
+  async getSumPoint(user: User) {
     try {
       const point: Point[] = await this.pointRepository.find({
         where: { user: user.idx },
