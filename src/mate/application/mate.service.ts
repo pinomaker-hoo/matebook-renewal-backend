@@ -7,6 +7,11 @@ import { MateRepository } from '../infrastructure/mate.repository'
 export class MateService {
   constructor(private readonly mateRepository: MateRepository) {}
 
+  /**
+   * Mate 조회 함수
+   * @param {User}user
+   * @returns {Mate}
+   */
   async findMateById(user: User) {
     try {
       return await this.mateRepository.findOne({ where: { user: user.idx } })
@@ -16,6 +21,12 @@ export class MateService {
     }
   }
 
+  /**
+   * Mate 저장 함수
+   * @param {User}user
+   * @param {string}name
+   * @returns {Mate}
+   */
   async saveMate(user: User, name: string) {
     try {
       const mate: Mate = this.mateRepository.create({
@@ -29,7 +40,12 @@ export class MateService {
     }
   }
 
-  async findMateByJwt(user: User) {
+  /**
+   * Mate With User 조회 함수
+   * @param {User} user
+   * @returns
+   */
+  async findMateWithUser(user: User) {
     try {
       return await this.mateRepository.findOne({
         where: { user: user.idx },
