@@ -16,7 +16,6 @@ import { UserBookModule } from './userBook/userBook.module'
 
 @Module({
   imports: [
-    BookModule,
     PointModule,
     QuizModule,
     ReviewModule,
@@ -40,6 +39,7 @@ import { UserBookModule } from './userBook/userBook.module'
     }),
     AuthModule,
     UserBookModule,
+    BookModule,
   ],
   controllers: [],
   providers: [],

@@ -15,7 +15,7 @@ export class BookService {
   async saveBook(req: BookSaveDto) {
     try {
       const findBook: Book[] = await this.findBookList(req.isbn)
-      if (findBook.length > 0) return findBook
+      if (findBook.length > 0) return findBook[0]
       const book = this.bookRepository.create({
         title: req.title,
         contents: req.contents,
