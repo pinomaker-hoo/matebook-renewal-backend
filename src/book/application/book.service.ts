@@ -90,4 +90,18 @@ export class BookService {
       throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
     }
   }
+
+  /**
+   * isbn 이용한 Book 조회
+   * @param {string} isbn
+   * @returns {Book}
+   */
+  async findBookByIsbn(isbn: string) {
+    try {
+      return await this.bookRepository.findOne({ where: { isbn } })
+    } catch (err) {
+      console.log(err)
+      throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
+    }
+  }
 }

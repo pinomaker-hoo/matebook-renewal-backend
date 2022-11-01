@@ -33,7 +33,7 @@ export class AuthController {
     private readonly mateService: MateService,
   ) {}
 
-  @Post()
+  @Post('/')
   async localSave(@Body() req: CreateUserDto, @Res() res) {
     const user = await this.authService.localSave(req)
     const token = await this.authService.gwtJwtWithIdx(user.idx)
@@ -114,7 +114,7 @@ export class AuthController {
     })
   }
 
-  @Get()
+  @Get('/')
   @UseGuards(JwtGuard)
   async getUserInfo(@Req() req) {
     const { user: response } = req
@@ -125,7 +125,7 @@ export class AuthController {
     })
   }
 
-  @Patch()
+  @Patch('/')
   @UseGuards(JwtGuard)
   @UseInterceptors(FilesInterceptor('files', null, multerDiskOptions))
   async updateImage(@Req() req, @UploadedFiles() files) {

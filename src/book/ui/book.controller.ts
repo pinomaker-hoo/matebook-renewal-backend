@@ -36,4 +36,15 @@ export class BookController {
       statusCode: 200,
     })
   }
+
+  @Get('/book/:isbn')
+  async findBookByIsbn(@Param('isbn') isbn: string) {
+    console.log(isbn)
+    const response = await this.bookService.findBookByIsbn(isbn)
+    return ApiResponse.of({
+      data: response,
+      message: 'Success Find Book',
+      statusCode: 200,
+    })
+  }
 }
