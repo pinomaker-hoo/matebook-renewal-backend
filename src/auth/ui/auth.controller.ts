@@ -33,25 +33,30 @@ export class AuthController {
     private readonly mateService: MateService,
   ) {}
 
-  @Post('/')
-  async localSave(@Body() req: CreateUserDto, @Res() res) {
+  @Post('/register')
+  async localSave(@Body() req: CreateUserDto) {
+    console.log(1)
     const user = await this.authService.localSave(req)
     const token = await this.authService.gwtJwtWithIdx(user.idx)
-    res.cookie('accessToken', token, {
-      expires: new Date(Date.now() + 86400e3),
+    const response = { user, token }
+    return ApiResponse.of({
+      data: response,
+      message: 'Success Register',
+      statusCode: 200,
     })
-    res.send(user)
   }
 
   @UseGuards(LocalGuard)
   @Post('/local')
-  async localLogin(@Req() req: ReqWithUser, @Res() res: Response) {
+  async localLogin(@Req() req: ReqWithUser) {
     const { user } = req
     const token = await this.authService.gwtJwtWithIdx(user.idx)
-    res.cookie('accessToken', token, {
-      expires: new Date(Date.now() + 86400e3),
+    const response = { user, token }
+    return ApiResponse.of({
+      data: response,
+      message: 'Success Local Login',
+      statusCode: 200,
     })
-    res.send({ user, token })
   }
 
   @Get('/kakao')
@@ -67,16 +72,11 @@ export class AuthController {
   async kakaoCallBack(@Req() req, @Res() res: Response) {
     const user = await this.authService.kakaoLogin(req.user)
     const token = await this.authService.gwtJwtWithIdx(user.idx)
-    res.cookie('accessToken', token, {
-      expires: new Date(Date.now() + 86400e3),
-    })
     const mate = await this.mateService.findMateById(user)
-    // return mate
-    //   ? res.redirect('http://localhost:5173')
-    //   : res.redirect('http://localhost:5173/auth/info')
+    const url = 'https://matebook.swygbro.com'
     return mate
-      ? res.redirect('http://210.90.136.10:5173/home')
-      : res.redirect('http://210.90.136.10:5173/auth/info')
+      ? res.redirect(`${url}/home?token=${token}`)
+      : res.redirect(`${url}/auth/info?token=${token}`)
   }
 
   @Get('/naver')
@@ -92,16 +92,11 @@ export class AuthController {
   async naverCallBack(@Req() req, @Res() res: Response) {
     const user = await this.authService.naverLogin(req.user)
     const token = await this.authService.gwtJwtWithIdx(user.idx)
-    res.cookie('accessToken', token, {
-      expires: new Date(Date.now() + 86400e3),
-    })
     const mate = await this.mateService.findMateById(user)
-    // return mate
-    //   ? res.redirect('http://localhost:5173')
-    //   : res.redirect('http://localhost:5173/auth/info')
+    const url = 'https://matebook.swygbro.com'
     return mate
-      ? res.redirect('http://210.90.136.10:5173/home')
-      : res.redirect('http://210.90.136.10:5173/auth/info')
+      ? res.redirect(`${url}/home?token=${token}`)
+      : res.redirect(`${url}/auth/info?token=${token}`)
   }
 
   @Post('/mail')

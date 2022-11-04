@@ -9,9 +9,6 @@ import { NaverDto } from '../dto/passport.naver.dto'
 import { Provider } from '../dto/user.provider.enum'
 import { MailerService } from '@nestjs-modules/mailer'
 import { male } from 'src/config/env/node'
-import { encode } from 'node-base64-image'
-import fs from 'fs'
-import path from 'path'
 
 @Injectable()
 export class AuthService {
@@ -24,6 +21,11 @@ export class AuthService {
   /** Local 회원가입 */
   async localSave(req: CreateUserDto): Promise<User> {
     try {
+      const findUser: User = await this.userRepository.findOne({
+        where: { email: req.email },
+      })
+      if (findUser)
+        throw new HttpException('이미 존재 합니다.', HttpStatus.BAD_REQUEST)
       const hash = await bcrypt.hash(req.password, 8)
       const user = this.userRepository.create({
         email: req.email,
@@ -43,7 +45,7 @@ export class AuthService {
   }
 
   /** Local 로그인 */
-  async localLogin(email: string, password: string): Promise<User> {
+  async localLogin(email: string, password: string) {
     try {
       const user = await this.userRepository.findOne({ where: { email } })
       await this.compareBcrypt(password, user.password)
@@ -139,6 +141,7 @@ export class AuthService {
   /** Bcrypt를 이용한 Hash 풀가 */
   async compareBcrypt(password: string, hash: string) {
     const result = await bcrypt.compare(password, hash)
+    console.log(result)
     if (!result)
       throw new HttpException('Password ERROR', HttpStatus.BAD_REQUEST)
   }

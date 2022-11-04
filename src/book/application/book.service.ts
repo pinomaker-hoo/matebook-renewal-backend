@@ -70,7 +70,7 @@ export class BookService {
   async findBookListCount(count: number) {
     try {
       const bookList: Book[] = await this.bookRepository.find()
-      return bookList.slice(0, count)
+      return bookList.sort(() => Math.random() - 0.5).slice(0, count)
     } catch (err) {
       console.log(err)
       throw new HttpException('ERROR', HttpStatus.BAD_REQUEST)
