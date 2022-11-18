@@ -35,7 +35,6 @@ export class AuthController {
 
   @Post('/register')
   async localSave(@Body() req: CreateUserDto) {
-    console.log(1)
     const user = await this.authService.localSave(req)
     const token = await this.authService.gwtJwtWithIdx(user.idx)
     const response = { user, token }
