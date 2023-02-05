@@ -59,5 +59,4 @@ import { male } from 'src/config/env/node'
     NaverStrategy,
   ],
 })
-
 export class AuthModule {}

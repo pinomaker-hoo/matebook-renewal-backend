@@ -150,6 +150,7 @@ export class AuthService {
   async sendMail(email: string) {
     try {
       const number: number = await this.getRandomNumber()
+      console.log(email, male.MALE_ID)
       await this.mailerService.sendMail({
         to: email,
         from: male.MALE_ID,
